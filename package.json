@@ -1,0 +1,39 @@
+{
+  "name": "saru",
+  "version": "0.0.1",
+  "description": "An interpreted language for NodeJS, based on Monkey",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test jest ./test",
+    "test-with-coverage": "npm test -- --coverage",
+    "eslint": "eslint -c .eslintrc *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freddiefujiwara/saru.git"
+  },
+  "keywords": [
+    "interpreter",
+    "monkey",
+    "language",
+    "javascript",
+    "nodejs",
+    "browser"
+  ],
+  "author": "Fumikazu Fujiwara <npm@ze.gs> (http://freddiefujiwara.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/freddiefujiwara/saru/issues"
+  },
+  "homepage": "https://github.com/freddiefujiwara/saru#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.5.5",
+    "babel-cli": "^6.26.0",
+    "babel-jest": "^24.8.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "eslint": "^6.1.0",
+    "eslint-config-google": "^0.13.0",
+    "eslint-plugin-jest": "^22.15.0",
+    "jest": "^24.8.0"
+  }
+}
