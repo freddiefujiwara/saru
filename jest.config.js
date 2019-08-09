@@ -3,6 +3,5 @@ module.exports = {
   transform: {
     '^.+\\.js$'  : '<rootDir>/node_modules/babel-jest'
   },
-  moduleFileExtensions: ['js'],
-  setupTestFrameworkScriptFile: '<rootDir>/jest-setup.js'
+  moduleFileExtensions: ['js']
 };
