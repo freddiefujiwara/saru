@@ -9,6 +9,7 @@ export default class Lexer {
     this.position = 0;
     this.readPosition = 0;
     this.ch = undefined;
+    this.readChar();
   }
   /*
    * read current position
