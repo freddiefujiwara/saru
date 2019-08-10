@@ -59,8 +59,22 @@ export default class Lexer {
     this.readChar();
     return tok;
   }
+  /*
+   * read identifier
+   */
+  readIdentifier(){
+    let position = this.position;
+    while (Lexer.isLetter(this.ch)) {
+      this.readChar();
+    }
+    return this.input.slice(position, this.position);
+  }
 }
 
+/*
+ * distinguish letter or not
+ * param {string} ch
+ */
 Lexer.isLetter = (ch) => {
   if (!ch) return false;
   return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch === '_' || ch === '-';

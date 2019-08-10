@@ -83,4 +83,16 @@ describe('Lexer', () => {
       expect(Lexer.isLetter(0)).toBe(false);
     });
   });
+  describe('readIdentifier', () => {
+    test('i.readIdentifier', () => {
+      let i = new Lexer('let me know');
+      i.readChar();
+      expect(typeof i.readIdentifier).toBe('function');
+      expect(i.readIdentifier()).toBe('let');
+      i.readChar();
+      expect(i.readIdentifier()).toBe('me');
+      i.readChar();
+      expect(i.readIdentifier()).toBe('know');
+    });
+  });
 });
