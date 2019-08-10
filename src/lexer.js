@@ -30,32 +30,86 @@ export default class Lexer {
     let tok;
     this.skipWhitespace();
     switch(this.ch){
-    case '=' :
-      tok = new Token(Token.TOKEN_TYPE.ASSIGN,this.ch);
+    case '=':
+      tok = new Token(Token.TOKEN_TYPE.ASSIGN, this.ch);
       break;
-    case ';' :
-      tok = new Token(Token.TOKEN_TYPE.SEMICOLON,this.ch);
+    case '+':
+      tok = new Token(Token.TOKEN_TYPE.PLUS, this.ch);
       break;
-    case '(' :
-      tok = new Token(Token.TOKEN_TYPE.LPAREN,this.ch);
+    case '-':
+      tok = new Token(Token.TOKEN_TYPE.MINUS, this.ch);
       break;
-    case ')' :
-      tok = new Token(Token.TOKEN_TYPE.RPAREN,this.ch);
+    case '!':
+      tok = new Token(Token.TOKEN_TYPE.BANG, this.ch);
       break;
-    case ',' :
-      tok = new Token(Token.TOKEN_TYPE.COMMA,this.ch);
+    case '/':
+      tok = new Token(Token.TOKEN_TYPE.SLASH, this.ch);
       break;
-    case '+' :
-      tok = new Token(Token.TOKEN_TYPE.PLUS,this.ch);
+    case '#':
+      tok = new Token(Token.TOKEN_TYPE.COMMENT, this.readComment());
       break;
-    case '{' :
-      tok = new Token(Token.TOKEN_TYPE.LBRACE,this.ch);
+    case '*':
+      tok = new Token(Token.TOKEN_TYPE.ASTERISK, this.ch);
       break;
-    case '}' :
-      tok = new Token(Token.TOKEN_TYPE.RBRACE,this.ch);
+    case '%':
+      tok = new Token(Token.TOKEN_TYPE.REM, this.ch);
       break;
-    case 0 :
-      tok = new Token(Token.TOKEN_TYPE.EOF,'');
+    case '&':
+      tok = new Token(Token.TOKEN_TYPE.BIT_AND, this.ch);
+      break;
+    case '|':
+      tok = new Token(Token.TOKEN_TYPE.BIT_OR, this.ch);
+      break;
+    case '.':
+      tok = new Token(Token.TOKEN_TYPE.PERIOD, this.ch);
+      break;
+    case '^':
+      tok = new Token(Token.TOKEN_TYPE.BIT_XOR, this.ch);
+      break;
+    case '~':
+      tok = new Token(Token.TOKEN_TYPE.BIT_NOT, this.ch);
+      break;
+    case '<':
+      tok = new Token(Token.TOKEN_TYPE.LT, this.ch);
+      break;
+    case '>':
+      tok = new Token(Token.TOKEN_TYPE.GT, this.ch);
+      break;
+    case ';':
+      tok = new Token(Token.TOKEN_TYPE.SEMICOLON, this.ch);
+      break;
+    case ',':
+      tok = new Token(Token.TOKEN_TYPE.COMMA, this.ch);
+      break;
+    case '{':
+      tok = new Token(Token.TOKEN_TYPE.LBRACE, this.ch);
+      break;
+    case '}':
+      tok = new Token(Token.TOKEN_TYPE.RBRACE, this.ch);
+      break;
+    case '(':
+      tok = new Token(Token.TOKEN_TYPE.LPAREN, this.ch);
+      break;
+    case ')':
+      tok = new Token(Token.TOKEN_TYPE.RPAREN, this.ch);
+      break;
+    case '[':
+      tok = new Token(Token.TOKEN_TYPE.LBRACKET, this.ch);
+      break;
+    case ']':
+      tok = new Token(Token.TOKEN_TYPE.RBRACKET, this.ch);
+      break;
+    case '"':
+      tok = new Token(Token.TOKEN_TYPE.STRING, this.readString('"'));
+      break;
+    case '\'':
+      tok = new Token(Token.TOKEN_TYPE.STRING, this.readString('\''));
+      break;
+    case ':':
+      tok = new Token(Token.TOKEN_TYPE.COLON, this.ch);
+      break;
+    case 0:
+      tok = new Token(Token.TOKEN_TYPE.EOF, '');
       break;
     default:
       if(Lexer.isLetter(this.ch)){
@@ -89,6 +143,28 @@ export default class Lexer {
       this.readChar();
     }
     return this.input.slice(position, this.position);
+  }
+  /*
+   * read string
+   */
+  readString(type){
+    let position = this.position + 1;
+    this.readChar();
+    while (this.ch !== type && 0 !== this.ch) {
+      this.readChar();
+    }
+    return this.input.slice(position, this.position);
+  }
+  /*
+   * read comment
+   */
+  readComment() {
+    let position = this.position + 1;
+    this.readChar();
+    while ('\n' !== this.ch && '\r' !== this.ch && 0 !== this.ch) {
+      this.readChar();
+    }
+    return this.input.slice(position, this.position).trim();
   }
   /*
    * skip white spaces
