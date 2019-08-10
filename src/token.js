@@ -76,3 +76,25 @@ Token.TOKEN_TYPE = {
   'ELSE': 'ELSE',
   'RETURN': 'RETURN'
 }
+Token.KEYWORDS = {
+  'as': Token.TOKEN_TYPE.AS,
+  'import': Token.TOKEN_TYPE.IMPORT,
+  'function': Token.TOKEN_TYPE.FUNCTION,
+  'while': Token.TOKEN_TYPE.WHILE,
+  'for': Token.TOKEN_TYPE.FOR,
+  'let': Token.TOKEN_TYPE.LET,
+  'true': Token.TOKEN_TYPE.TRUE,
+  'false': Token.TOKEN_TYPE.FALSE,
+  'if': Token.TOKEN_TYPE.IF,
+  'else': Token.TOKEN_TYPE.ELSE,
+  'return': Token.TOKEN_TYPE.RETURN,
+  'and': Token.TOKEN_TYPE.LAND,
+  'or': Token.TOKEN_TYPE.LOR
+};
+
+Token.LookupIdent = (ident) => {
+  if (Token.KEYWORDS[ident]){
+    return Token.KEYWORDS[ident];
+  }
+  return Token.TOKEN_TYPE.IDENT;
+}
