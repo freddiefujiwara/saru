@@ -16,7 +16,7 @@ export default class Lexer {
    */
   readChar(){
     if (this.readPosition >= this.input.length) {
-      this.ch = 0
+      this.ch = 0;
     }else{
       this.ch = this.input.charAt(this.readPosition);
     }
@@ -30,33 +30,38 @@ export default class Lexer {
     let tok;
     this.skipWhitespace();
     switch(this.ch){
-      case '=' :
-        tok = new Token(Token.TOKEN_TYPE.ASSIGN,this.ch);
-        break;
-      case ';' :
-        tok = new Token(Token.TOKEN_TYPE.SEMICOLON,this.ch);
-        break;
-      case '(' :
-        tok = new Token(Token.TOKEN_TYPE.LPAREN,this.ch);
-        break;
-      case ')' :
-        tok = new Token(Token.TOKEN_TYPE.RPAREN,this.ch);
-        break;
-      case ',' :
-        tok = new Token(Token.TOKEN_TYPE.COMMA,this.ch);
-        break;
-      case '+' :
-        tok = new Token(Token.TOKEN_TYPE.PLUS,this.ch);
-        break;
-      case '{' :
-        tok = new Token(Token.TOKEN_TYPE.LBRACE,this.ch);
-        break;
-      case '}' :
-        tok = new Token(Token.TOKEN_TYPE.RBRACE,this.ch);
-        break;
-      case 0 :
-        tok = new Token(Token.TOKEN_TYPE.EOF,"");
-        break;
+    case '=' :
+      tok = new Token(Token.TOKEN_TYPE.ASSIGN,this.ch);
+      break;
+    case ';' :
+      tok = new Token(Token.TOKEN_TYPE.SEMICOLON,this.ch);
+      break;
+    case '(' :
+      tok = new Token(Token.TOKEN_TYPE.LPAREN,this.ch);
+      break;
+    case ')' :
+      tok = new Token(Token.TOKEN_TYPE.RPAREN,this.ch);
+      break;
+    case ',' :
+      tok = new Token(Token.TOKEN_TYPE.COMMA,this.ch);
+      break;
+    case '+' :
+      tok = new Token(Token.TOKEN_TYPE.PLUS,this.ch);
+      break;
+    case '{' :
+      tok = new Token(Token.TOKEN_TYPE.LBRACE,this.ch);
+      break;
+    case '}' :
+      tok = new Token(Token.TOKEN_TYPE.RBRACE,this.ch);
+      break;
+    case 0 :
+      tok = new Token(Token.TOKEN_TYPE.EOF,'');
+      break;
+    default:
+      if(Lexer.isLetter(this.ch)){
+        let identifier = this.readIdentifier();
+        tok = new Token(Token.LookupIdent(identifier),identifier);
+      }
     }
     this.readChar();
     return tok;
@@ -75,7 +80,7 @@ export default class Lexer {
    * skip white spaces
    */
   skipWhitespace(){
-    while (" \t\n\r".indexOf(this.ch) !== -1){
+    while (' \t\n\r'.indexOf(this.ch) !== -1){
       this.readChar();
     }
   }
@@ -89,7 +94,7 @@ Lexer.isLetter = (ch) => {
   if (!ch) return false;
   if (ch.length !== 1) return false;
   return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch === '_';
-}
+};
 /*
  * distinguish digit or not
  * param {string} ch
@@ -98,4 +103,4 @@ Lexer.isDigit = (ch) => {
   if (!ch) return false;
   if (ch.length !== 1) return false;
   return '0' <= ch && ch <= '9';
-}
+};

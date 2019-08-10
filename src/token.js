@@ -75,7 +75,7 @@ Token.TOKEN_TYPE = {
   'IF': 'IF',
   'ELSE': 'ELSE',
   'RETURN': 'RETURN'
-}
+};
 Token.KEYWORDS = {
   'as': Token.TOKEN_TYPE.AS,
   'import': Token.TOKEN_TYPE.IMPORT,
@@ -97,4 +97,4 @@ Token.LookupIdent = (ident) => {
     return Token.KEYWORDS[ident];
   }
   return Token.TOKEN_TYPE.IDENT;
-}
+};

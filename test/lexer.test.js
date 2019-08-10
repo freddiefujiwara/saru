@@ -1,4 +1,5 @@
 import Lexer from '../src/lexer';
+import Token from '../src/token';
 describe('Lexer', () => {
   describe('constructer', () => {
     test('new Lexer', () => {
@@ -61,29 +62,36 @@ describe('Lexer', () => {
       t = i.NextToken();
       expect(t.type).toBe('EOF');
       expect(t.literal).toBe('');
+      i = new Lexer('let val');
+      t = i.NextToken();
+      expect(t.type).toBe(Token.TOKEN_TYPE.LET);
+      expect(t.literal).toBe('let');
+      t = i.NextToken();
+      expect(t.type).toBe(Token.TOKEN_TYPE.IDENT);
+      expect(t.literal).toBe('val');
     });
   });
   describe('static isLetter', () => {
     test('Lexer.isLetter("c")', () => {
       expect(typeof Lexer.isLetter).toBe('function');
-      expect(Lexer.isLetter("a")).toBe(true);
-      expect(Lexer.isLetter("b")).toBe(true);
-      expect(Lexer.isLetter("y")).toBe(true);
-      expect(Lexer.isLetter("z")).toBe(true);
-      expect(Lexer.isLetter("A")).toBe(true);
-      expect(Lexer.isLetter("B")).toBe(true);
-      expect(Lexer.isLetter("Y")).toBe(true);
-      expect(Lexer.isLetter("Z")).toBe(true);
-      expect(Lexer.isLetter("_")).toBe(true);
-      expect(Lexer.isLetter("0")).toBe(false);
-      expect(Lexer.isLetter("ab")).toBe(false);
+      expect(Lexer.isLetter('a')).toBe(true);
+      expect(Lexer.isLetter('b')).toBe(true);
+      expect(Lexer.isLetter('y')).toBe(true);
+      expect(Lexer.isLetter('z')).toBe(true);
+      expect(Lexer.isLetter('A')).toBe(true);
+      expect(Lexer.isLetter('B')).toBe(true);
+      expect(Lexer.isLetter('Y')).toBe(true);
+      expect(Lexer.isLetter('Z')).toBe(true);
+      expect(Lexer.isLetter('_')).toBe(true);
+      expect(Lexer.isLetter('0')).toBe(false);
+      expect(Lexer.isLetter('ab')).toBe(false);
       expect(Lexer.isLetter(undefined)).toBe(false);
       expect(Lexer.isLetter(0)).toBe(false);
     });
   });
   describe('readIdentifier', () => {
     test('i.readIdentifier', () => {
-      let i = new Lexer("let \tme \r\nknow_that");
+      let i = new Lexer('let \tme \r\nknow_that');
       expect(typeof i.readIdentifier).toBe('function');
       expect(i.readIdentifier()).toBe('let');
       i.skipWhitespace();
@@ -95,13 +103,13 @@ describe('Lexer', () => {
   describe('static isDigit', () => {
     test('Lexer.isDigit("c")', () => {
       expect(typeof Lexer.isDigit).toBe('function');
-      expect(Lexer.isDigit("0")).toBe(true);
-      expect(Lexer.isDigit("1")).toBe(true);
-      expect(Lexer.isDigit("9")).toBe(true);
-      expect(Lexer.isDigit("A")).toBe(false);
-      expect(Lexer.isDigit("-1")).toBe(false);
-      expect(Lexer.isDigit("1.1")).toBe(false);
-      expect(Lexer.isDigit("_")).toBe(false);
+      expect(Lexer.isDigit('0')).toBe(true);
+      expect(Lexer.isDigit('1')).toBe(true);
+      expect(Lexer.isDigit('9')).toBe(true);
+      expect(Lexer.isDigit('A')).toBe(false);
+      expect(Lexer.isDigit('-1')).toBe(false);
+      expect(Lexer.isDigit('1.1')).toBe(false);
+      expect(Lexer.isDigit('_')).toBe(false);
       expect(Lexer.isDigit(undefined)).toBe(false);
       expect(Lexer.isDigit(0)).toBe(false);
     });

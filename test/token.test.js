@@ -11,7 +11,7 @@ describe('Token', () => {
   describe('static LookupIdent', () => {
     test('Token.LookupIdent("c")', () => {
       expect(typeof Token.LookupIdent).toBe('function');
-      expect(Token.LookupIdent("ident")).toBe(Token.TOKEN_TYPE.IDENT);
+      expect(Token.LookupIdent('ident')).toBe(Token.TOKEN_TYPE.IDENT);
       let expectation = {
         'as': Token.TOKEN_TYPE.AS,
         'import': Token.TOKEN_TYPE.IMPORT,
