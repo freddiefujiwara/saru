@@ -100,7 +100,7 @@ export default class Lexer {
       tok = new Token(Token.TOKEN_TYPE.RBRACKET, this.ch);
       break;
     case '"':
-      tok = new Token(Token.TOKEN_TYPE.STRING, this.readString('"'));
+      tok = new Token(Token.TOKEN_TYPE.STRING, this.readString());
       break;
     case '\'':
       tok = new Token(Token.TOKEN_TYPE.STRING, this.readString('\''));
@@ -147,7 +147,7 @@ export default class Lexer {
   /*
    * read string
    */
-  readString(type){
+  readString(type = '"'){
     let position = this.position + 1;
     this.readChar();
     while (this.ch !== type && 0 !== this.ch) {
