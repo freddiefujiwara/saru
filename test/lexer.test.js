@@ -1,8 +1,8 @@
 import Lexer from '../src/lexer';
 import Token from '../src/token';
 describe('Lexer', () => {
-  describe('constructer', () => {
-    test('new Lexer', () => {
+  describe('constructor', () => {
+    test('for constructor with member variables', () => {
       let i = new Lexer('INT');
       expect(i.input).toBe('INT');
       expect(i.position).toBe(0);
@@ -11,7 +11,7 @@ describe('Lexer', () => {
     });
   });
   describe('readChar', () => {
-    test('i.readChar', () => {
+    test('for reading single chars', () => {
       let i = new Lexer('INT');
       expect(typeof i.readChar).toBe('function');
       expect(i.position).toBe(0);
@@ -32,7 +32,7 @@ describe('Lexer', () => {
     });
   });
   describe('NextToken', () => {
-    test('check for each TOKEN_TYPEs', () => {
+    test('for each TOKEN_TYPEs', () => {
       const expectedPairs = [['=',Token.TOKEN_TYPE.ASSIGN],
         ['+',Token.TOKEN_TYPE.PLUS],
         ['-',Token.TOKEN_TYPE.MINUS],
@@ -66,7 +66,7 @@ describe('Lexer', () => {
         expect(t.type).toBe(expectedPairs[ind][1]);
       }
     });
-    test('check for actual code', () => {
+    test('for actual code', () => {
       let i = new Lexer('\n\
       let five = 5; \n\
       let ten = 10;@ \n\
@@ -75,6 +75,8 @@ describe('Lexer', () => {
       let add = fn(x, y) { \n\
           x + y; #comment \n\
       }; \n\
+      10 == 10; \n\
+      10 != 10; \n\
       let result = add(five, ten);');
       const expectedPairs = [
         [Token.TOKEN_TYPE.LET, 'let'],
@@ -115,6 +117,14 @@ describe('Lexer', () => {
         [Token.TOKEN_TYPE.COMMENT, 'comment'],
         [Token.TOKEN_TYPE.RBRACE, '}'],
         [Token.TOKEN_TYPE.SEMICOLON, ';'],
+        [Token.TOKEN_TYPE.INT, '10'],
+        [Token.TOKEN_TYPE.EQ, '=='],
+        [Token.TOKEN_TYPE.INT, '10'],
+        [Token.TOKEN_TYPE.SEMICOLON, ';'],
+        [Token.TOKEN_TYPE.INT, '10'],
+        [Token.TOKEN_TYPE.NOT_EQ, '!='],
+        [Token.TOKEN_TYPE.INT, '10'],
+        [Token.TOKEN_TYPE.SEMICOLON, ';'],
         [Token.TOKEN_TYPE.LET, 'let'],
         [Token.TOKEN_TYPE.IDENT, 'result'],
         [Token.TOKEN_TYPE.ASSIGN, '='],
@@ -134,7 +144,7 @@ describe('Lexer', () => {
     });
   });
   describe('static isLetter', () => {
-    test('Lexer.isLetter("c")', () => {
+    test('like Lexer.isLetter("c")', () => {
       expect(typeof Lexer.isLetter).toBe('function');
       expect(Lexer.isLetter('a')).toBe(true);
       expect(Lexer.isLetter('b')).toBe(true);
@@ -152,7 +162,7 @@ describe('Lexer', () => {
     });
   });
   describe('readIdentifier', () => {
-    test('i.readIdentifier', () => {
+    test('for identifierable text', () => {
       let i = new Lexer('let \tme \r\nknow_that');
       expect(typeof i.readIdentifier).toBe('function');
       expect(i.readIdentifier()).toBe('let');
@@ -163,7 +173,7 @@ describe('Lexer', () => {
     });
   });
   describe('static isDigit', () => {
-    test('Lexer.isDigit("c")', () => {
+    test('like Lexer.isDigit("c")', () => {
       expect(typeof Lexer.isDigit).toBe('function');
       expect(Lexer.isDigit('0')).toBe(true);
       expect(Lexer.isDigit('1')).toBe(true);
@@ -177,16 +187,29 @@ describe('Lexer', () => {
     });
   });
   describe('skipWhitespace', () => {
-    test('i.skipWhitespace', () => {
+    test('for white spaces', () => {
       let i = new Lexer('let me know_that');
       expect(typeof i.skipWhitespace).toBe('function');
     });
   });
   describe('readNumber', () => {
-    test('i.readNumber', () => {
+    test('for numbers', () => {
       let i = new Lexer('100');
       expect(typeof i.readNumber).toBe('function');
       expect(i.readNumber()).toBe('100');
+    });
+  });
+  describe('peekChar', () => {
+    test('for reading single chars', () => {
+      let i = new Lexer('INT');
+      expect(typeof i.peekChar).toBe('function');
+      expect(i.position).toBe(0);
+      expect(i.readPosition).toBe(1);
+      expect(i.ch).toBe('I');
+      i.peekChar();
+      expect(i.position).toBe(0);
+      expect(i.readPosition).toBe(1);
+      expect(i.ch).toBe('I');
     });
   });
 });

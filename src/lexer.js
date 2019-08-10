@@ -15,13 +15,68 @@ export default class Lexer {
    * read current position
    */
   readChar(){
-    if (this.readPosition >= this.input.length) {
-      this.ch = 0;
-    } else {
-      this.ch = this.input.charAt(this.readPosition);
-    }
+    this.ch = this.peekChar();
     this.position = this.readPosition;
     this.readPosition++;
+  }
+  /*
+   * peek current position
+   */
+  peekChar(){
+    if (this.readPosition >= this.input.length) {
+      return 0;
+    }
+    return this.input.charAt(this.readPosition);
+  }
+  /*
+   * read identifier
+   */
+  readIdentifier(){
+    let position = this.position;
+    while (Lexer.isLetter(this.ch)) {
+      this.readChar();
+    }
+    return this.input.slice(position, this.position);
+  }
+  /*
+   * read number
+   */
+  readNumber(){
+    let position = this.position;
+    while (Lexer.isDigit(this.ch)) {
+      this.readChar();
+    }
+    return this.input.slice(position, this.position);
+  }
+  /*
+   * read string
+   */
+  readString(type = '"'){
+    let position = this.position + 1;
+    this.readChar();
+    while (this.ch !== type && 0 !== this.ch) {
+      this.readChar();
+    }
+    return this.input.slice(position, this.position);
+  }
+  /*
+   * read comment
+   */
+  readComment() {
+    let position = this.position + 1;
+    this.readChar();
+    while ('\n' !== this.ch && '\r' !== this.ch && 0 !== this.ch) {
+      this.readChar();
+    }
+    return this.input.slice(position, this.position).trim();
+  }
+  /*
+   * skip white spaces
+   */
+  skipWhitespace(){
+    while (-1 !== ' \t\n\r'.indexOf(this.ch)){
+      this.readChar();
+    }
   }
   /*
    * read NextToken
@@ -31,7 +86,12 @@ export default class Lexer {
     this.skipWhitespace();
     switch(this.ch){
     case '=':
-      tok = new Token(Token.TOKEN_TYPE.ASSIGN, this.ch);
+      if('=' === this.peekChar()){
+        this.readChar();
+        tok = new Token(Token.TOKEN_TYPE.EQ, '==');
+      } else {
+        tok = new Token(Token.TOKEN_TYPE.ASSIGN, this.ch);
+      }
       break;
     case '+':
       tok = new Token(Token.TOKEN_TYPE.PLUS, this.ch);
@@ -40,7 +100,12 @@ export default class Lexer {
       tok = new Token(Token.TOKEN_TYPE.MINUS, this.ch);
       break;
     case '!':
-      tok = new Token(Token.TOKEN_TYPE.BANG, this.ch);
+      if('=' === this.peekChar()){
+        this.readChar();
+        tok = new Token(Token.TOKEN_TYPE.NOT_EQ, '!=');
+      } else {
+        tok = new Token(Token.TOKEN_TYPE.BANG, this.ch);
+      }
       break;
     case '/':
       tok = new Token(Token.TOKEN_TYPE.SLASH, this.ch);
@@ -123,56 +188,6 @@ export default class Lexer {
     }
     this.readChar();
     return tok;
-  }
-  /*
-   * read identifier
-   */
-  readIdentifier(){
-    let position = this.position;
-    while (Lexer.isLetter(this.ch)) {
-      this.readChar();
-    }
-    return this.input.slice(position, this.position);
-  }
-  /*
-   * read number
-   */
-  readNumber(){
-    let position = this.position;
-    while (Lexer.isDigit(this.ch)) {
-      this.readChar();
-    }
-    return this.input.slice(position, this.position);
-  }
-  /*
-   * read string
-   */
-  readString(type = '"'){
-    let position = this.position + 1;
-    this.readChar();
-    while (this.ch !== type && 0 !== this.ch) {
-      this.readChar();
-    }
-    return this.input.slice(position, this.position);
-  }
-  /*
-   * read comment
-   */
-  readComment() {
-    let position = this.position + 1;
-    this.readChar();
-    while ('\n' !== this.ch && '\r' !== this.ch && 0 !== this.ch) {
-      this.readChar();
-    }
-    return this.input.slice(position, this.position).trim();
-  }
-  /*
-   * skip white spaces
-   */
-  skipWhitespace(){
-    while (-1 !== ' \t\n\r'.indexOf(this.ch)){
-      this.readChar();
-    }
   }
 }
 
