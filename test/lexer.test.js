@@ -32,7 +32,7 @@ describe('Lexer', () => {
     });
   });
   describe('NextToken', () => {
-    test('i.NextToken', () => {
+    test('check for each TOKEN_TYPEs', () => {
       const expectedPairs = [['=',Token.TOKEN_TYPE.ASSIGN],
         ['+',Token.TOKEN_TYPE.PLUS],
         ['-',Token.TOKEN_TYPE.MINUS],
@@ -55,56 +55,82 @@ describe('Lexer', () => {
         [')',Token.TOKEN_TYPE.RPAREN],
         ['[',Token.TOKEN_TYPE.LBRACKET],
         [']',Token.TOKEN_TYPE.RBRACKET],
-        [':',Token.TOKEN_TYPE.COLON]];
+        [':',Token.TOKEN_TYPE.COLON],
+        ['',Token.TOKEN_TYPE.EOF]];
 
       let i = new Lexer('=+-!/*%&|.^~<>;,{}()[]:');
       expect(typeof i.NextToken).toBe('function');
       for( let ind = 0; ind < expectedPairs.length ; ind ++){
         let t = i.NextToken();
-//        console.log(t);
+        expect(t.literal).toBe(expectedPairs[ind][0]);
+        expect(t.type).toBe(expectedPairs[ind][1]);
+      }
+    });
+    test('check for actual code', () => {
+      let i = new Lexer('\n\
+      let five = 5; \n\
+      let ten = 10;@ \n\
+      let string = \'single\'; \n\
+      let string_double = "double"; \n\
+      let add = fn(x, y) { \n\
+          x + y; #comment \n\
+      }; \n\
+      let result = add(five, ten);');
+      const expectedPairs = [
+        [Token.TOKEN_TYPE.LET, 'let'],
+        [Token.TOKEN_TYPE.IDENT, 'five'],
+        [Token.TOKEN_TYPE.ASSIGN, '='],
+        [Token.TOKEN_TYPE.INT, '5'],
+        [Token.TOKEN_TYPE.SEMICOLON, ';'],
+        [Token.TOKEN_TYPE.LET, 'let'],
+        [Token.TOKEN_TYPE.IDENT, 'ten'],
+        [Token.TOKEN_TYPE.ASSIGN, '='],
+        [Token.TOKEN_TYPE.INT, '10'],
+        [Token.TOKEN_TYPE.SEMICOLON, ';'],
+        [Token.TOKEN_TYPE.ILLEGAL, '@'],
+        [Token.TOKEN_TYPE.LET, 'let'],
+        [Token.TOKEN_TYPE.IDENT, 'string'],
+        [Token.TOKEN_TYPE.ASSIGN, '='],
+        [Token.TOKEN_TYPE.STRING, 'single'],
+        [Token.TOKEN_TYPE.SEMICOLON, ';'],
+        [Token.TOKEN_TYPE.LET, 'let'],
+        [Token.TOKEN_TYPE.IDENT, 'string_double'],
+        [Token.TOKEN_TYPE.ASSIGN, '='],
+        [Token.TOKEN_TYPE.STRING, 'double'],
+        [Token.TOKEN_TYPE.SEMICOLON, ';'],
+        [Token.TOKEN_TYPE.LET, 'let'],
+        [Token.TOKEN_TYPE.IDENT, 'add'],
+        [Token.TOKEN_TYPE.ASSIGN, '='],
+        [Token.TOKEN_TYPE.FUNCTION, 'fn'],
+        [Token.TOKEN_TYPE.LPAREN, '('],
+        [Token.TOKEN_TYPE.IDENT, 'x'],
+        [Token.TOKEN_TYPE.COMMA, ','],
+        [Token.TOKEN_TYPE.IDENT, 'y'],
+        [Token.TOKEN_TYPE.RPAREN, ')'],
+        [Token.TOKEN_TYPE.LBRACE, '{'],
+        [Token.TOKEN_TYPE.IDENT, 'x'],
+        [Token.TOKEN_TYPE.PLUS, '+'],
+        [Token.TOKEN_TYPE.IDENT, 'y'],
+        [Token.TOKEN_TYPE.SEMICOLON, ';'],
+        [Token.TOKEN_TYPE.COMMENT, 'comment'],
+        [Token.TOKEN_TYPE.RBRACE, '}'],
+        [Token.TOKEN_TYPE.SEMICOLON, ';'],
+        [Token.TOKEN_TYPE.LET, 'let'],
+        [Token.TOKEN_TYPE.IDENT, 'result'],
+        [Token.TOKEN_TYPE.ASSIGN, '='],
+        [Token.TOKEN_TYPE.IDENT, 'add'],
+        [Token.TOKEN_TYPE.LPAREN, '('],
+        [Token.TOKEN_TYPE.IDENT, 'five'],
+        [Token.TOKEN_TYPE.COMMA, ','],
+        [Token.TOKEN_TYPE.IDENT, 'ten'],
+        [Token.TOKEN_TYPE.RPAREN, ')'],
+        [Token.TOKEN_TYPE.SEMICOLON, ';'],
+        [Token.TOKEN_TYPE.EOF, '']];
+      for( let ind = 0; ind < expectedPairs.length ; ind ++){
+        let t = i.NextToken();
         expect(t.type).toBe(expectedPairs[ind][0]);
         expect(t.literal).toBe(expectedPairs[ind][1]);
       }
-      let t = i.NextToken();
-      expect(t.type).toBe('EOF');
-      expect(t.literal).toBe('');
-      i = new Lexer('let val = 100@\nlet str = \'string\' #comment\r"string"');
-      t = i.NextToken();
-      expect(t.type).toBe(Token.TOKEN_TYPE.LET);
-      expect(t.literal).toBe('let');
-      t = i.NextToken();
-      expect(t.type).toBe(Token.TOKEN_TYPE.IDENT);
-      expect(t.literal).toBe('val');
-      t = i.NextToken();
-      expect(t.type).toBe('=');
-      expect(t.literal).toBe('=');
-      t = i.NextToken();
-      expect(t.type).toBe(Token.TOKEN_TYPE.INT);
-      expect(t.literal).toBe('100');
-      t = i.NextToken();
-      expect(t.type).toBe(Token.TOKEN_TYPE.ILLEGAL);
-      expect(t.literal).toBe('@');
-      t = i.NextToken();
-      expect(t.type).toBe(Token.TOKEN_TYPE.LET);
-      expect(t.literal).toBe('let');
-      t = i.NextToken();
-      expect(t.type).toBe(Token.TOKEN_TYPE.IDENT);
-      expect(t.literal).toBe('str');
-      t = i.NextToken();
-      expect(t.type).toBe('=');
-      expect(t.literal).toBe('=');
-      t = i.NextToken();
-      expect(t.type).toBe(Token.TOKEN_TYPE.STRING);
-      expect(t.literal).toBe('string');
-      t = i.NextToken();
-      expect(t.type).toBe(Token.TOKEN_TYPE.COMMENT);
-      expect(t.literal).toBe('comment');
-      t = i.NextToken();
-      expect(t.type).toBe(Token.TOKEN_TYPE.STRING);
-      expect(t.literal).toBe('string');
-      t = i.NextToken();
-      expect(t.type).toBe('EOF');
-      expect(t.literal).toBe('');
     });
   });
   describe('static isLetter', () => {

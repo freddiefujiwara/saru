@@ -79,7 +79,7 @@ Token.TOKEN_TYPE = {
 Token.KEYWORDS = {
   'as': Token.TOKEN_TYPE.AS,
   'import': Token.TOKEN_TYPE.IMPORT,
-  'function': Token.TOKEN_TYPE.FUNCTION,
+  'fn': Token.TOKEN_TYPE.FUNCTION,
   'while': Token.TOKEN_TYPE.WHILE,
   'for': Token.TOKEN_TYPE.FOR,
   'let': Token.TOKEN_TYPE.LET,
