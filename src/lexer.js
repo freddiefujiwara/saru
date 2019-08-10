@@ -78,5 +78,5 @@ export default class Lexer {
  */
 Lexer.isLetter = (ch) => {
   if (!ch) return false;
-  return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch === '_' || ch === '-';
+  return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch === '_';
 }

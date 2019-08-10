@@ -75,7 +75,6 @@ describe('Lexer', () => {
       expect(Lexer.isLetter("Y")).toBe(true);
       expect(Lexer.isLetter("Z")).toBe(true);
       expect(Lexer.isLetter("_")).toBe(true);
-      expect(Lexer.isLetter("-")).toBe(true);
       expect(Lexer.isLetter("0")).toBe(false);
       expect(Lexer.isLetter(undefined)).toBe(false);
       expect(Lexer.isLetter(0)).toBe(false);
@@ -83,13 +82,13 @@ describe('Lexer', () => {
   });
   describe('readIdentifier', () => {
     test('i.readIdentifier', () => {
-      let i = new Lexer('let me know');
+      let i = new Lexer('let me know_that');
       expect(typeof i.readIdentifier).toBe('function');
       expect(i.readIdentifier()).toBe('let');
       i.readChar();
       expect(i.readIdentifier()).toBe('me');
       i.readChar();
-      expect(i.readIdentifier()).toBe('know');
+      expect(i.readIdentifier()).toBe('know_that');
     });
   });
 });
