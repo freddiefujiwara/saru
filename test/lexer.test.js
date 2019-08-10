@@ -62,13 +62,25 @@ describe('Lexer', () => {
       t = i.NextToken();
       expect(t.type).toBe('EOF');
       expect(t.literal).toBe('');
-      i = new Lexer('let val');
+      i = new Lexer('let val = 100-');
       t = i.NextToken();
       expect(t.type).toBe(Token.TOKEN_TYPE.LET);
       expect(t.literal).toBe('let');
       t = i.NextToken();
       expect(t.type).toBe(Token.TOKEN_TYPE.IDENT);
       expect(t.literal).toBe('val');
+      t = i.NextToken();
+      expect(t.type).toBe('=');
+      expect(t.literal).toBe('=');
+      t = i.NextToken();
+      expect(t.type).toBe(Token.TOKEN_TYPE.INT);
+      expect(t.literal).toBe('100');
+      t = i.NextToken();
+      expect(t.type).toBe(Token.TOKEN_TYPE.ILLEGAL);
+      expect(t.literal).toBe('-');
+      t = i.NextToken();
+      expect(t.type).toBe('EOF');
+      expect(t.literal).toBe('');
     });
   });
   describe('static isLetter', () => {
@@ -118,6 +130,13 @@ describe('Lexer', () => {
     test('i.skipWhitespace', () => {
       let i = new Lexer('let me know_that');
       expect(typeof i.skipWhitespace).toBe('function');
+    });
+  });
+  describe('readNumber', () => {
+    test('i.readNumber', () => {
+      let i = new Lexer('100');
+      expect(typeof i.readNumber).toBe('function');
+      expect(i.readNumber()).toBe("100");
     });
   });
 });

@@ -60,8 +60,12 @@ export default class Lexer {
     default:
       if(Lexer.isLetter(this.ch)){
         let identifier = this.readIdentifier();
-        tok = new Token(Token.LookupIdent(identifier),identifier);
+        return new Token(Token.LookupIdent(identifier),identifier);
       }
+      if(Lexer.isDigit(this.ch)){
+        return new Token(Token.TOKEN_TYPE.INT,this.readNumber());
+      }
+      tok = new Token(Token.TOKEN_TYPE.ILLEGAL,this.ch);
     }
     this.readChar();
     return tok;
@@ -72,6 +76,16 @@ export default class Lexer {
   readIdentifier(){
     let position = this.position;
     while (Lexer.isLetter(this.ch)) {
+      this.readChar();
+    }
+    return this.input.slice(position, this.position);
+  }
+  /*
+   * read number
+   */
+  readNumber(){
+    let position = this.position;
+    while (Lexer.isDigit(this.ch)) {
       this.readChar();
     }
     return this.input.slice(position, this.position);
