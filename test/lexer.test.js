@@ -136,7 +136,7 @@ describe('Lexer', () => {
     test('i.readNumber', () => {
       let i = new Lexer('100');
       expect(typeof i.readNumber).toBe('function');
-      expect(i.readNumber()).toBe("100");
+      expect(i.readNumber()).toBe('100');
     });
   });
 });

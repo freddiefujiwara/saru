@@ -17,7 +17,7 @@ export default class Lexer {
   readChar(){
     if (this.readPosition >= this.input.length) {
       this.ch = 0;
-    }else{
+    } else {
       this.ch = this.input.charAt(this.readPosition);
     }
     this.position = this.readPosition;
@@ -94,7 +94,7 @@ export default class Lexer {
    * skip white spaces
    */
   skipWhitespace(){
-    while (' \t\n\r'.indexOf(this.ch) !== -1){
+    while (-1 !== ' \t\n\r'.indexOf(this.ch)){
       this.readChar();
     }
   }
@@ -105,8 +105,7 @@ export default class Lexer {
  * param {string} ch
  */
 Lexer.isLetter = (ch) => {
-  if (!ch) return false;
-  if (ch.length !== 1) return false;
+  if (!ch || 1 != ch.length) return false;
   return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch === '_';
 };
 /*
@@ -114,7 +113,6 @@ Lexer.isLetter = (ch) => {
  * param {string} ch
  */
 Lexer.isDigit = (ch) => {
-  if (!ch) return false;
-  if (ch.length !== 1) return false;
+  if (!ch || 1 != ch.length) return false;
   return '0' <= ch && ch <= '9';
 };
