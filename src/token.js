@@ -14,7 +14,7 @@ Token.TOKEN_TYPE = {
 
   // Identifiers + literals
   'IDENT': 'IDENT', // add, foobar, x, y, ...
-  'INT': 'INT', // 1343456
+  'INT': 'INT', // 123456
   'FLOAT': 'FLOAT', // 123.456
   'STRING': 'STRING', // "foo", "Hello, World!"
 

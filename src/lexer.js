@@ -80,3 +80,11 @@ Lexer.isLetter = (ch) => {
   if (!ch) return false;
   return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch === '_';
 }
+/*
+ * distinguish digit or not
+ * param {string} ch
+ */
+Lexer.isDigit = (ch) => {
+  if (!ch) return false;
+  return '0' <= ch && ch <= '9';
+}

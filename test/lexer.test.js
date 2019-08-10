@@ -91,4 +91,19 @@ describe('Lexer', () => {
       expect(i.readIdentifier()).toBe('know_that');
     });
   });
+  describe('static isDigit', () => {
+    test('Lexer.isDigit("c")', () => {
+      expect(typeof Lexer.isDigit).toBe('function');
+      expect(Lexer.isDigit("0")).toBe(true);
+      expect(Lexer.isDigit("1")).toBe(true);
+      expect(Lexer.isDigit("9")).toBe(true);
+      expect(Lexer.isDigit("10")).toBe(true);
+      expect(Lexer.isDigit("A")).toBe(false);
+      expect(Lexer.isDigit("-1")).toBe(false);
+      expect(Lexer.isDigit("1.1")).toBe(false);
+      expect(Lexer.isDigit("_")).toBe(false);
+      expect(Lexer.isDigit(undefined)).toBe(false);
+      expect(Lexer.isDigit(0)).toBe(false);
+    });
+  });
 });
