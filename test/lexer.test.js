@@ -76,18 +76,19 @@ describe('Lexer', () => {
       expect(Lexer.isLetter("Z")).toBe(true);
       expect(Lexer.isLetter("_")).toBe(true);
       expect(Lexer.isLetter("0")).toBe(false);
+      expect(Lexer.isLetter("ab")).toBe(false);
       expect(Lexer.isLetter(undefined)).toBe(false);
       expect(Lexer.isLetter(0)).toBe(false);
     });
   });
   describe('readIdentifier', () => {
     test('i.readIdentifier', () => {
-      let i = new Lexer('let me know_that');
+      let i = new Lexer("let \tme \r\nknow_that");
       expect(typeof i.readIdentifier).toBe('function');
       expect(i.readIdentifier()).toBe('let');
-      i.readChar();
+      i.skipWhitespace();
       expect(i.readIdentifier()).toBe('me');
-      i.readChar();
+      i.skipWhitespace();
       expect(i.readIdentifier()).toBe('know_that');
     });
   });
@@ -97,13 +98,18 @@ describe('Lexer', () => {
       expect(Lexer.isDigit("0")).toBe(true);
       expect(Lexer.isDigit("1")).toBe(true);
       expect(Lexer.isDigit("9")).toBe(true);
-      expect(Lexer.isDigit("10")).toBe(true);
       expect(Lexer.isDigit("A")).toBe(false);
       expect(Lexer.isDigit("-1")).toBe(false);
       expect(Lexer.isDigit("1.1")).toBe(false);
       expect(Lexer.isDigit("_")).toBe(false);
       expect(Lexer.isDigit(undefined)).toBe(false);
       expect(Lexer.isDigit(0)).toBe(false);
+    });
+  });
+  describe('skipWhitespace', () => {
+    test('i.skipWhitespace', () => {
+      let i = new Lexer('let me know_that');
+      expect(typeof i.skipWhitespace).toBe('function');
     });
   });
 });

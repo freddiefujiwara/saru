@@ -28,6 +28,7 @@ export default class Lexer {
    */
   NextToken(){
     let tok;
+    this.skipWhitespace();
     switch(this.ch){
       case '=' :
         tok = new Token(Token.TOKEN_TYPE.ASSIGN,this.ch);
@@ -69,6 +70,14 @@ export default class Lexer {
       this.readChar();
     }
     return this.input.slice(position, this.position);
+  }
+  /*
+   * skip white spaces
+   */
+  skipWhitespace(){
+    while (" \t\n\r".indexOf(this.ch) !== -1){
+      this.readChar();
+    }
   }
 }
 
