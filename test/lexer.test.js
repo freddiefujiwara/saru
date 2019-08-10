@@ -65,4 +65,22 @@ describe('Lexer', () => {
       expect(t.literal).toBe('');
     });
   });
+  describe('static isLetter', () => {
+    test('Lexer.isLetter("c")', () => {
+      expect(typeof Lexer.isLetter).toBe('function');
+      expect(Lexer.isLetter("a")).toBe(true);
+      expect(Lexer.isLetter("b")).toBe(true);
+      expect(Lexer.isLetter("y")).toBe(true);
+      expect(Lexer.isLetter("z")).toBe(true);
+      expect(Lexer.isLetter("A")).toBe(true);
+      expect(Lexer.isLetter("B")).toBe(true);
+      expect(Lexer.isLetter("Y")).toBe(true);
+      expect(Lexer.isLetter("Z")).toBe(true);
+      expect(Lexer.isLetter("_")).toBe(true);
+      expect(Lexer.isLetter("-")).toBe(true);
+      expect(Lexer.isLetter("0")).toBe(false);
+      expect(Lexer.isLetter(undefined)).toBe(false);
+      expect(Lexer.isLetter(0)).toBe(false);
+    });
+  });
 });

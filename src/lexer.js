@@ -60,3 +60,8 @@ export default class Lexer {
     return tok;
   }
 }
+
+Lexer.isLetter = (ch) => {
+  if (!ch) return false;
+  return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch === '_' || ch === '-';
+}
