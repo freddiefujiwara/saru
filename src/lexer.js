@@ -189,21 +189,21 @@ export default class Lexer {
     this.readChar();
     return tok;
   }
-}
-
-/*
+  /*
  * distinguish letter or not
  * param {string} ch
  */
-Lexer.isLetter = (ch) => {
-  if (!ch || 1 != ch.length) return false;
-  return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch === '_';
-};
-/*
+  static isLetter(ch) {
+    if (!ch || 1 != ch.length) return false;
+    return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch === '_';
+  }
+  /*
  * distinguish digit or not
  * param {string} ch
  */
-Lexer.isDigit = (ch) => {
-  if (!ch || 1 != ch.length) return false;
-  return '0' <= ch && ch <= '9';
-};
+  static isDigit(ch) {
+    if (!ch || 1 != ch.length) return false;
+    return '0' <= ch && ch <= '9';
+  }
+}
+
