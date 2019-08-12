@@ -10,6 +10,7 @@ export default class Parser {
    */
   constructor(lexer){
     this.lexer = lexer;
+    this.errors = [];
     this.nextToken();
     this.nextToken();
   }
@@ -87,6 +88,21 @@ export default class Parser {
       this.nextToken();
       return true;
     }
+    this.peekError(type);
     return false;
+  }
+  /*
+   * expect peekToken
+   */
+  peekError(type){
+    this.errors.push(
+      `expected next token to be ${type}, got ${this.peekToken.type} instead`
+    );
+  }
+  /*
+   * return errors
+   */
+  get Errors(){
+    return this.errors;
   }
 }

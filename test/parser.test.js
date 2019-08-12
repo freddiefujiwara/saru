@@ -6,6 +6,7 @@ describe('Parser', () => {
     test('new Parser', () => {
       let i = new Parser(new Lexer('let var = 10;'));
       expect(i.lexer.input).toBe('let var = 10;');
+      expect(i.errors.length).toBe(0);
     });
   });
   describe('nextToken', () => {
@@ -21,24 +22,35 @@ describe('Parser', () => {
   });
   describe('ParseProgram', () => {
     test('parse a let statement', () => {
-      let i = new Parser(new Lexer(
-        `let x = 5;
+      let i = new Parser(new Lexer(`
+        let x = 5;
         let y = 10;
-        let foobar = 838383;`
-      ));
+        let foobar = 838383;
+        let x  5;
+        let  = 10;
+        let 838383;
+      `));
       expect(typeof i.ParseProgram).toBe('function');
       let stmt = i.ParseProgram();
       expect(stmt.statements.length).toBe(3);
-      const expectedIdents = ['x','y','foobar'];
-      for(let i = 0; i < expectedIdents.length; i++){
-        expect(stmt.statements[i].constructor.name).toBe('LetStatement');
-        expect(stmt.statements[i].token.constructor.name).toBe('Token');
-        expect(stmt.statements[i].token.type).toBe(Token.TOKEN_TYPE.LET);
-        expect(stmt.statements[i].token.literal).toBe('let');
-        expect(stmt.statements[i].name.constructor.name).toBe('Identifier');
-        expect(stmt.statements[i].name.token.type).toBe(Token.TOKEN_TYPE.IDENT);
-        expect(stmt.statements[i].name.token.literal).toBe(expectedIdents[i]);
-        expect(stmt.statements[i].name.value).toBe(expectedIdents[i]);
+      const expectedIdentifiers = ['x','y','foobar'];
+      for(let ind = 0; ind < expectedIdentifiers.length; ind++){
+        expect(stmt.statements[ind].constructor.name).toBe('LetStatement');
+        expect(stmt.statements[ind].token.constructor.name).toBe('Token');
+        expect(stmt.statements[ind].token.type).toBe(Token.TOKEN_TYPE.LET);
+        expect(stmt.statements[ind].token.literal).toBe('let');
+        expect(stmt.statements[ind].name.constructor.name).toBe('Identifier');
+        expect(stmt.statements[ind].name.token.type).toBe(Token.TOKEN_TYPE.IDENT);
+        expect(stmt.statements[ind].name.token.literal).toBe(expectedIdentifiers[ind]);
+        expect(stmt.statements[ind].name.value).toBe(expectedIdentifiers[ind]);
+      }
+      const expectedErrors = [
+        'expected next token to be =, got INT instead',
+        'expected next token to be IDENT, got = instead',
+        'expected next token to be IDENT, got INT instead'
+      ];
+      for(let ind = 0; ind < expectedIdentifiers.length; ind++){
+        expect(i.Errors[ind]).toBe(expectedErrors[ind]);
       }
 
       i = new Parser(new Lexer('let 10'));
@@ -48,6 +60,21 @@ describe('Parser', () => {
       i = new Parser(new Lexer('let me'));
       stmt = i.ParseProgram();
       expect(stmt).not.toBe(undefined);
+    });
+  });
+  describe('Errors', () => {
+    test('check current errors', () => {
+      let i = new Parser(new Lexer('let var = 10;'));
+      expect(typeof i.Errors).toBe('object');
+      expect(i.Errors.length).toBe(0);
+    });
+  });
+  describe('peekError', () => {
+    test('add peek error and check', () => {
+      let i = new Parser(new Lexer('let var = 10;'));
+      expect(typeof i.peekError).toBe('function');
+      i.peekError(Token.TOKEN_TYPE.INT);
+      expect(i.Errors.length).toBe(1);
     });
   });
 });
