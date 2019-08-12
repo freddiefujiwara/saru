@@ -4,7 +4,6 @@ describe('Expression', () => {
     test('new Expression', () => {
       let i = new Expression();
       expect(i).not.toBeNull();
-      expect(i.node).toBe(undefined);
     });
   });
   describe('expressionNode', () => {

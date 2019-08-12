@@ -5,7 +5,6 @@ describe('Identifier', () => {
     test('new Identifier', () => {
       let i = new Identifier();
       expect(i).not.toBeNull();
-      expect(i.node).toBe(undefined);
       expect(i.token).toBe(undefined);
       expect(i.value).toBe(undefined);
     });

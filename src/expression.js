@@ -5,7 +5,6 @@ export default class Expression extends Node {
    */
   constructor(){
     super();
-    this.node = undefined;
   }
   /*
    * get expressionNode

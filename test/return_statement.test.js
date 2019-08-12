@@ -5,7 +5,6 @@ describe('ReturnStatement', () => {
     test('new ReturnStatement', () => {
       let i = new ReturnStatement();
       expect(i).not.toBeNull();
-      expect(i.node).toBe(undefined);
       expect(i.token).toBe(undefined);
       expect(i.name).toBe(undefined);
       expect(i.value).toBe(undefined);

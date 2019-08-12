@@ -5,7 +5,6 @@ export default class Statement extends Node {
    */
   constructor(){
     super();
-    this.node = undefined;
   }
   /*
    * get statementNode

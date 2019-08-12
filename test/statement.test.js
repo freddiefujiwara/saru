@@ -4,7 +4,6 @@ describe('Statement', () => {
     test('new Statement', () => {
       let i = new Statement();
       expect(i).not.toBeNull();
-      expect(i.node).toBe(undefined);
     });
   });
   describe('statementNode', () => {
