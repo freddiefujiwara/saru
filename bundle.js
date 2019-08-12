@@ -1,3 +1,5 @@
-const Lexer = require('./lib/lexer').default;
-const Token = require('./lib/token').default;
-const Parser = require('./lib/parser').default;
+module.exports = {
+  Lexer : require('./lib/lexer').default,
+  Token : require('./lib/token').default,
+  Parser : require('./lib/parser').default
+};
