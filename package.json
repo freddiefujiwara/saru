@@ -4,10 +4,11 @@
   "description": "An interpreted language for NodeJS, based on Monkey",
   "main": "index.js",
   "bin": {
-    "saru": "index.js"
+    "saru": "./bin/saru.js"
   },
   "files": [
     "lib",
+    "bin",
     "index.js",
     "check-version.js"
   ],
