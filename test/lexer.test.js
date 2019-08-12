@@ -68,17 +68,18 @@ describe('Lexer', () => {
       }
     });
     test('for actual code', () => {
-      let i = new Lexer('\n\
-      let five = 5; \n\
-      let ten = 10;@ \n\
-      let string = \'single\'; \n\
-      let string_double = "double"; \n\
-      let add = fn(x, y) { \n\
-          x + y; #comment \n\
-      }; \n\
-      10 == 10; \n\
-      10 != 10; \n\
-      let result = add(five, ten);');
+      let i = new Lexer(`
+      let five = 5;
+      let ten = 10;@
+      let string = 'single';
+      let string_double = "double";
+      let add = fn(x, y) {
+          x + y; #comment
+      };
+      10 == 10;
+      10 != 10;
+      let result = add(five, ten);
+      `);
       const expectedPairs = [
         [Token.TOKEN_TYPE.LET, 'let'],
         [Token.TOKEN_TYPE.IDENT, 'five'],
