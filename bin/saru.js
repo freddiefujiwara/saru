@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const pkg = require('./package');
-const Lexer = require('./lib/lexer').default;
-const Token = require('./lib/token').default;
+const pkg = require('../package');
+const Lexer = require('../lib/lexer').default;
+const Token = require('../lib/token').default;
 const ReadlineSync = require('readline-sync');
 const os = require('os');
 

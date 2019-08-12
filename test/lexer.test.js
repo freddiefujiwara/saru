@@ -33,51 +33,53 @@ describe('Lexer', () => {
   });
   describe('NextToken', () => {
     test('for each TOKEN_TYPEs', () => {
-      const expectedPairs = [['=',Token.TOKEN_TYPE.ASSIGN],
-        ['+',Token.TOKEN_TYPE.PLUS],
-        ['-',Token.TOKEN_TYPE.MINUS],
-        ['!',Token.TOKEN_TYPE.BANG],
-        ['/',Token.TOKEN_TYPE.SLASH],
-        ['*',Token.TOKEN_TYPE.ASTERISK],
-        ['%',Token.TOKEN_TYPE.REM],
-        ['&',Token.TOKEN_TYPE.BIT_AND],
-        ['|',Token.TOKEN_TYPE.BIT_OR],
-        ['.',Token.TOKEN_TYPE.PERIOD],
-        ['^',Token.TOKEN_TYPE.BIT_XOR],
-        ['~',Token.TOKEN_TYPE.BIT_NOT],
-        ['<',Token.TOKEN_TYPE.LT],
-        ['>',Token.TOKEN_TYPE.GT],
-        [';',Token.TOKEN_TYPE.SEMICOLON],
-        [',',Token.TOKEN_TYPE.COMMA],
-        ['{',Token.TOKEN_TYPE.LBRACE],
-        ['}',Token.TOKEN_TYPE.RBRACE],
-        ['(',Token.TOKEN_TYPE.LPAREN],
-        [')',Token.TOKEN_TYPE.RPAREN],
-        ['[',Token.TOKEN_TYPE.LBRACKET],
-        [']',Token.TOKEN_TYPE.RBRACKET],
-        [':',Token.TOKEN_TYPE.COLON],
-        ['',Token.TOKEN_TYPE.EOF]];
+      const expectedPairs =
+        [[Token.TOKEN_TYPE.ASSIGN,   '='],
+          [Token.TOKEN_TYPE.PLUS,     '+'],
+          [Token.TOKEN_TYPE.MINUS,    '-'],
+          [Token.TOKEN_TYPE.BANG,     '!'],
+          [Token.TOKEN_TYPE.SLASH,    '/'],
+          [Token.TOKEN_TYPE.ASTERISK, '*'],
+          [Token.TOKEN_TYPE.REM,      '%'],
+          [Token.TOKEN_TYPE.BIT_AND,  '&'],
+          [Token.TOKEN_TYPE.BIT_OR,   '|'],
+          [Token.TOKEN_TYPE.PERIOD,   '.'],
+          [Token.TOKEN_TYPE.BIT_XOR,  '^'],
+          [Token.TOKEN_TYPE.BIT_NOT,  '~'],
+          [Token.TOKEN_TYPE.LT,       '<'],
+          [Token.TOKEN_TYPE.GT,       '>'],
+          [Token.TOKEN_TYPE.SEMICOLON,';'],
+          [Token.TOKEN_TYPE.COMMA,    ','],
+          [Token.TOKEN_TYPE.LBRACE,   '{'],
+          [Token.TOKEN_TYPE.RBRACE,   '}'],
+          [Token.TOKEN_TYPE.LPAREN,   '('],
+          [Token.TOKEN_TYPE.RPAREN,   ')'],
+          [Token.TOKEN_TYPE.LBRACKET, '['],
+          [Token.TOKEN_TYPE.RBRACKET, ']'],
+          [Token.TOKEN_TYPE.COLON,    ':'],
+          [Token.TOKEN_TYPE.EOF,    '' ]];
 
       let i = new Lexer('=+-!/*%&|.^~<>;,{}()[]:');
       expect(typeof i.NextToken).toBe('function');
-      for( let ind = 0; ind < expectedPairs.length ; ind ++){
+      for( const expectedPair of expectedPairs){
         let t = i.NextToken();
-        expect(t.literal).toBe(expectedPairs[ind][0]);
-        expect(t.type).toBe(expectedPairs[ind][1]);
+        expect(t.type).toBe(expectedPair[0]);
+        expect(t.literal).toBe(expectedPair[1]);
       }
     });
     test('for actual code', () => {
-      let i = new Lexer('\n\
-      let five = 5; \n\
-      let ten = 10;@ \n\
-      let string = \'single\'; \n\
-      let string_double = "double"; \n\
-      let add = fn(x, y) { \n\
-          x + y; #comment \n\
-      }; \n\
-      10 == 10; \n\
-      10 != 10; \n\
-      let result = add(five, ten);');
+      let i = new Lexer(`
+      let five = 5;
+      let ten = 10;@
+      let string = 'single';
+      let string_double = "double";
+      let add = fn(x, y) {
+          x + y; #comment
+      };
+      10 == 10;
+      10 != 10;
+      let result = add(five, ten);
+      `);
       const expectedPairs = [
         [Token.TOKEN_TYPE.LET, 'let'],
         [Token.TOKEN_TYPE.IDENT, 'five'],
@@ -136,10 +138,10 @@ describe('Lexer', () => {
         [Token.TOKEN_TYPE.RPAREN, ')'],
         [Token.TOKEN_TYPE.SEMICOLON, ';'],
         [Token.TOKEN_TYPE.EOF, '']];
-      for( let ind = 0; ind < expectedPairs.length ; ind ++){
+      for( const expectedPair of expectedPairs){
         let t = i.NextToken();
-        expect(t.type).toBe(expectedPairs[ind][0]);
-        expect(t.literal).toBe(expectedPairs[ind][1]);
+        expect(t.type).toBe(expectedPair[0]);
+        expect(t.literal).toBe(expectedPair[1]);
       }
     });
   });
