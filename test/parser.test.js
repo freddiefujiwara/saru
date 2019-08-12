@@ -15,9 +15,9 @@ describe('Parser', () => {
       let i = new Parser(new Lexer('let var = 10;'));
       expect(typeof i.nextToken).toBe('function');
       expect(i.curToken.type).toBe(Token.TOKEN_TYPE.LET);
-      expect(i.curToken.literal).toBe("let");
+      expect(i.curToken.literal).toBe('let');
       expect(i.peekToken.type).toBe(Token.TOKEN_TYPE.IDENT);
-      expect(i.peekToken.literal).toBe("var");
+      expect(i.peekToken.literal).toBe('var');
     });
   });
   describe('ParseProgram', () => {

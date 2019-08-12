@@ -12,7 +12,7 @@ describe('Program', () => {
     test('only check the existence', () => {
       let i = new Program();
       expect(typeof i.TokenLiteral).toBe('function');
-      expect(i.TokenLiteral()).toBe("");
+      expect(i.TokenLiteral()).toBe('');
       i.statements.push(new Statement());
       expect(i.TokenLiteral()).toBe(undefined);
     });
