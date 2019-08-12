@@ -32,7 +32,7 @@ export default class Lexer {
    * read identifier
    */
   readIdentifier(){
-    let position = this.position;
+    const position = this.position;
     while (Lexer.isLetter(this.ch)) {
       this.readChar();
     }
@@ -42,7 +42,7 @@ export default class Lexer {
    * read number
    */
   readNumber(){
-    let position = this.position;
+    const position = this.position;
     while (Lexer.isDigit(this.ch)) {
       this.readChar();
     }
@@ -52,7 +52,7 @@ export default class Lexer {
    * read string
    */
   readString(type = '"'){
-    let position = this.position + 1;
+    const position = this.position + 1;
     this.readChar();
     while (this.ch !== type && 0 !== this.ch) {
       this.readChar();
@@ -63,7 +63,7 @@ export default class Lexer {
    * read comment
    */
   readComment() {
-    let position = this.position + 1;
+    const position = this.position + 1;
     this.readChar();
     while ('\n' !== this.ch && '\r' !== this.ch && 0 !== this.ch) {
       this.readChar();
@@ -178,7 +178,7 @@ export default class Lexer {
       break;
     default:
       if(Lexer.isLetter(this.ch)){
-        let identifier = this.readIdentifier();
+        const identifier = this.readIdentifier();
         return new Token(Token.LookupIdent(identifier),identifier);
       }
       if(Lexer.isDigit(this.ch)){

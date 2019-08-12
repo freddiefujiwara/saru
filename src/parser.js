@@ -26,10 +26,10 @@ export default class Parser {
    * parse and return the program
    */
   ParseProgram(){
-    let p = new Program();
+    const p = new Program();
     for(;Token.TOKEN_TYPE.EOF !== this.curToken.type;
       this.nextToken()){
-      let stmt = this.parseStatement();
+      const stmt = this.parseStatement();
       if(undefined !== stmt){
         p.statements.push(stmt);
       }
@@ -52,12 +52,12 @@ export default class Parser {
    * parse LetStatement
    */
   parseLetStatement(){
-    let stmt = new LetStatement();
+    const stmt = new LetStatement();
     stmt.token = this.curToken;
     if(!this.expectPeek(Token.TOKEN_TYPE.IDENT)){
       return undefined;
     }
-    let ident = new Identifier();
+    const ident = new Identifier();
     ident.token = this.curToken;
     ident.value = this.curToken.literal;
     stmt.name = ident;
@@ -73,7 +73,7 @@ export default class Parser {
    * parse ReturnStatement
    */
   parseReturnStatement(){
-    let stmt = new ReturnStatement();
+    const stmt = new ReturnStatement();
     stmt.token = this.curToken;
     this.nextToken();
     while(!this.curTokenIs(Token.TOKEN_TYPE.SEMICOLON)){
