@@ -28,8 +28,8 @@ describe('Token', () => {
         'or': Token.TOKEN_TYPE.LOR
       };
       let keys = Object.keys(expectation);
-      for(let i = 0 ; i < keys.length ; i ++){
-        expect(Token.LookupIdent(keys[i])).toBe(expectation[keys[i]]);
+      for(const key of keys){
+        expect(Token.LookupIdent(key)).toBe(expectation[key]);
       }
     });
   });

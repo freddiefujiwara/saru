@@ -61,10 +61,10 @@ describe('Lexer', () => {
 
       let i = new Lexer('=+-!/*%&|.^~<>;,{}()[]:');
       expect(typeof i.NextToken).toBe('function');
-      for( let ind = 0; ind < expectedPairs.length ; ind ++){
+      for( const expectedPair of expectedPairs){
         let t = i.NextToken();
-        expect(t.type).toBe(expectedPairs[ind][0]);
-        expect(t.literal).toBe(expectedPairs[ind][1]);
+        expect(t.type).toBe(expectedPair[0]);
+        expect(t.literal).toBe(expectedPair[1]);
       }
     });
     test('for actual code', () => {
@@ -138,10 +138,10 @@ describe('Lexer', () => {
         [Token.TOKEN_TYPE.RPAREN, ')'],
         [Token.TOKEN_TYPE.SEMICOLON, ';'],
         [Token.TOKEN_TYPE.EOF, '']];
-      for( let ind = 0; ind < expectedPairs.length ; ind ++){
+      for( const expectedPair of expectedPairs){
         let t = i.NextToken();
-        expect(t.type).toBe(expectedPairs[ind][0]);
-        expect(t.literal).toBe(expectedPairs[ind][1]);
+        expect(t.type).toBe(expectedPair[0]);
+        expect(t.literal).toBe(expectedPair[1]);
       }
     });
   });
