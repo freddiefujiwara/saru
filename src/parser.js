@@ -1,6 +1,7 @@
 import Program from '../src/program';
 import Token from '../src/token';
 import LetStatement from '../src/let_statement';
+import ReturnStatement from '../src/return_statement';
 import Identifier from '../src/identifier';
 
 export default class Parser {
@@ -42,6 +43,8 @@ export default class Parser {
     switch(this.curToken.type){
     case Token.TOKEN_TYPE.LET :
       return this.parseLetStatement();
+    case Token.TOKEN_TYPE.RETURN :
+      return this.parseReturnStatement();
     }
     return undefined;
   }
@@ -61,6 +64,18 @@ export default class Parser {
     if(!this.expectPeek(Token.TOKEN_TYPE.ASSIGN)){
       return undefined;
     }
+    while(!this.curTokenIs(Token.TOKEN_TYPE.SEMICOLON)){
+      this.nextToken();
+    }
+    return stmt;
+  }
+  /*
+   * parse ReturnStatement
+   */
+  parseReturnStatement(){
+    let stmt = new ReturnStatement();
+    stmt.token = this.curToken;
+    this.nextToken();
     while(!this.curTokenIs(Token.TOKEN_TYPE.SEMICOLON)){
       this.nextToken();
     }

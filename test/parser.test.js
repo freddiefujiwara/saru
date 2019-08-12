@@ -61,6 +61,23 @@ describe('Parser', () => {
       stmt = i.ParseProgram();
       expect(stmt).not.toBe(undefined);
     });
+    test('parse return statements', () => {
+      let i = new Parser(new Lexer(`
+        return 5;
+        return 10;
+        return 993322;
+      `));
+      expect(typeof i.ParseProgram).toBe('function');
+      let stmt = i.ParseProgram();
+      expect(stmt.statements.length).toBe(3);
+      const expectedIdentifiers = ['5','10','993322'];
+      for(let ind = 0; ind < expectedIdentifiers.length; ind++){
+        expect(stmt.statements[ind].constructor.name).toBe('ReturnStatement');
+        expect(stmt.statements[ind].token.constructor.name).toBe('Token');
+        expect(stmt.statements[ind].token.type).toBe(Token.TOKEN_TYPE.RETURN);
+        expect(stmt.statements[ind].token.literal).toBe('return');
+      }
+    });
   });
   describe('Errors', () => {
     test('check current errors', () => {
