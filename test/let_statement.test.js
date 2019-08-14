@@ -6,9 +6,6 @@ describe('LetStatement', () => {
     test('new LetStatement', () => {
       const i = new LetStatement();
       expect(i).not.toBeNull();
-      expect(i.token).toBe(undefined);
-      expect(i.name).toBe(undefined);
-      expect(i.value).toBe(undefined);
     });
   });
   describe('toString', () => {
