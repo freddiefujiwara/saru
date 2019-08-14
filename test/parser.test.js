@@ -32,7 +32,7 @@ describe('Parser', () => {
       `));
       expect(typeof i.ParseProgram).toBe('function');
       let stmt = i.ParseProgram();
-      expect(stmt.Statements.length).toBe(3);
+      expect(stmt.Statements.length).toBe(7); // 3 let statements and '5' '=' '10' '838383'
       const expectedIdentifiers = ['x','y','foobar'];
       for(let ind = 0; ind < expectedIdentifiers.length; ind++){
         expect(stmt.Statements[ind].constructor.name).toBe('LetStatement');
@@ -77,6 +77,21 @@ describe('Parser', () => {
         expect(stmt.Statements[ind].Token.Type).toBe(Token.TOKEN_TYPE.RETURN);
         expect(stmt.Statements[ind].Token.Literal).toBe('return');
       }
+    });
+    test('parse expression statements', () => {
+      const i = new Parser(new Lexer(`
+        foobar;
+      `));
+      const stmt = i.ParseProgram();
+      expect(stmt.Statements.length).toBe(1);
+      expect(stmt.Statements[0].constructor.name).toBe('ExpressionStatement');
+      expect(stmt.Statements[0].Token.constructor.name).toBe('Token');
+      expect(stmt.Statements[0].Token.Type).toBe(Token.TOKEN_TYPE.IDENT);
+      expect(stmt.Statements[0].Token.Literal).toBe('foobar');
+      expect(stmt.Statements[0].Expression.constructor.name).toBe('Identifier');
+      expect(stmt.Statements[0].Expression.Token.Type).toBe(Token.TOKEN_TYPE.IDENT);
+      expect(stmt.Statements[0].Expression.Token.Literal).toBe('foobar');
+      expect(stmt.Statements[0].Expression.Value).toBe('foobar');
     });
   });
   describe('Errors', () => {

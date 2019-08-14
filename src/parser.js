@@ -2,6 +2,7 @@ import Program from '../src/program';
 import Token from '../src/token';
 import LetStatement from '../src/let_statement';
 import ReturnStatement from '../src/return_statement';
+import ExpressionStatement from '../src/expression_statement';
 import Identifier from '../src/identifier';
 const LOWEST = 1;
 const LOR = 2;
@@ -57,7 +58,30 @@ export default class Parser {
       case Token.TOKEN_TYPE.RETURN :
         return this.parseReturnStatement();
     }
-    return undefined;
+    return this.parseExpressionStatement();
+  }
+  /*
+   * parse Expression
+   */
+  parseExpression(){
+    let leftExp;
+    switch(this.curToken.Type){
+      case Token.TOKEN_TYPE.IDENT :
+        leftExp =  this.parseIdentifier();
+        break;
+      default :
+        leftExp = undefined;
+    }
+    return leftExp;
+  }
+  /*
+   * parse Identifier
+   */
+  parseIdentifier(){
+    return new Identifier(
+      this.curToken,
+      this.curToken.Literal
+    );
   }
   /*
    * parse LetStatement
@@ -91,6 +115,19 @@ export default class Parser {
     );
     this.nextToken();
     while(!this.curTokenIs(Token.TOKEN_TYPE.SEMICOLON)){
+      this.nextToken();
+    }
+    return stmt;
+  }
+  /*
+   * parse ExpressionStatement
+   */
+  parseExpressionStatement(){
+    const stmt = new ExpressionStatement(
+      this.curToken,
+      this.parseExpression(LOWEST)
+    );
+    if(this.peekTokenIs(Token.TOKEN_TYPE.SEMICOLON)){
       this.nextToken();
     }
     return stmt;
