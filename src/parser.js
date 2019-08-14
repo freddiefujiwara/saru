@@ -3,6 +3,17 @@ import Token from '../src/token';
 import LetStatement from '../src/let_statement';
 import ReturnStatement from '../src/return_statement';
 import Identifier from '../src/identifier';
+const LOWEST = 1;
+const LOR = 2;
+const LAND = 3;
+const EQUALS = 4;
+const LESSGREATER = 5;
+const SUM = 6;
+const PRODUCT = 7;
+const PREFIX = 8;
+const BITWISE = 9;
+const CALL = 10;
+const INDEX = 11;
 
 export default class Parser {
   /*
