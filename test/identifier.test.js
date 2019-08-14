@@ -14,7 +14,7 @@ describe('Identifier', () => {
       const i = new Identifier(undefined,'value');
       expect(typeof i.toString).toBe('function');
       const str = `${i}`;
-      expect(str).toBe("value");
+      expect(str).toBe('value');
     });
   });
   describe('expressionNode', () => {

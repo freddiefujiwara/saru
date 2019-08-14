@@ -10,7 +10,7 @@ describe('Node', () => {
     test('string expression', () => {
       const i = new Node();
       const str = `${i}`;
-      expect(str).toBe("Node {}");
+      expect(str).toBe('Node {}');
     });
   });
   describe('TokenLiteral', () => {

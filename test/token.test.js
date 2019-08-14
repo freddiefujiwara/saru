@@ -49,7 +49,7 @@ describe('Token', () => {
     test('string expression', () => {
       const i = new Token('INT', '10');
       const str = `${i}`;
-      expect(str).toBe("Token { type: 'INT', literal: '10' }");
+      expect(str).toBe('Token { type: \'INT\', literal: \'10\' }');
     });
   });
 });

@@ -17,7 +17,7 @@ describe('IntegerLiteral', () => {
       );
       expect(typeof i.toString).toBe('function');
       const str = `${i}`;
-      expect(str).toBe("10");
+      expect(str).toBe('10');
     });
   });
   describe('expressionNode', () => {
@@ -33,7 +33,7 @@ describe('IntegerLiteral', () => {
         new Token('INT','10')
       );
       expect(typeof i.TokenLiteral).toBe('function');
-      expect(i.TokenLiteral()).toBe("10");
+      expect(i.TokenLiteral()).toBe('10');
     });
   });
 });

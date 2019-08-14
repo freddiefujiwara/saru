@@ -6,6 +6,7 @@ import ExpressionStatement from '../src/expression_statement';
 import Identifier from '../src/identifier';
 import IntegerLiteral from '../src/integer_literal';
 const LOWEST = 1;
+/* to be used in future
 const LOR = 2;
 const LAND = 3;
 const EQUALS = 4;
@@ -16,6 +17,7 @@ const PREFIX = 8;
 const BITWISE = 9;
 const CALL = 10;
 const INDEX = 11;
+*/
 
 export default class Parser {
   /*
@@ -54,10 +56,10 @@ export default class Parser {
    */
   parseStatement(){
     switch(this.curToken.Type){
-      case Token.TOKEN_TYPE.LET :
-        return this.parseLetStatement();
-      case Token.TOKEN_TYPE.RETURN :
-        return this.parseReturnStatement();
+    case Token.TOKEN_TYPE.LET :
+      return this.parseLetStatement();
+    case Token.TOKEN_TYPE.RETURN :
+      return this.parseReturnStatement();
     }
     return this.parseExpressionStatement();
   }
@@ -67,14 +69,14 @@ export default class Parser {
   parseExpression(){
     let leftExp;
     switch(this.curToken.Type){
-      case Token.TOKEN_TYPE.IDENT :
-        leftExp =  this.parseIdentifier();
-        break;
-      case Token.TOKEN_TYPE.INT :
-        leftExp =  this.parseIntegerLiteral();
-        break;
-      default :
-        leftExp = undefined;
+    case Token.TOKEN_TYPE.IDENT :
+      leftExp =  this.parseIdentifier();
+      break;
+    case Token.TOKEN_TYPE.INT :
+      leftExp =  this.parseIntegerLiteral();
+      break;
+    default :
+      leftExp = undefined;
     }
     return leftExp;
   }
@@ -93,7 +95,7 @@ export default class Parser {
   parseIntegerLiteral(){
     return new IntegerLiteral(
       this.curToken,
-      parseInt(this.curToken.Literal)
+      parseInt(this.curToken.Literal,10)
     );
   }
   /*

@@ -9,7 +9,7 @@ export default class Node {
    * console.log(node) # -> "Node {}"
    */
   toString(){
-    return `Node {}`;
+    return 'Node {}';
   }
   /*
    * Token literal

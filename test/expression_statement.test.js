@@ -21,7 +21,7 @@ describe('ExpressionStatement', () => {
       expect(typeof i.toString).toBe('function');
       expect(i.Value).toBe(undefined);
       const str = `${i}`;
-      expect(str).toBe("let val = undefined");
+      expect(str).toBe('let val = undefined');
     });
   });
   describe('statementNode', () => {

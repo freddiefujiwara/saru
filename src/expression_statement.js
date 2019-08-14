@@ -1,6 +1,5 @@
 import Statement from '../src/statement';
 const _token = Symbol('token');
-const _name = Symbol('name');
 const _expression = Symbol('expression');
 export default class ExpressionStatement extends Statement {
   /*
