@@ -4,6 +4,7 @@ import LetStatement from '../src/let_statement';
 import ReturnStatement from '../src/return_statement';
 import ExpressionStatement from '../src/expression_statement';
 import Identifier from '../src/identifier';
+import IntegerLiteral from '../src/integer_literal';
 const LOWEST = 1;
 const LOR = 2;
 const LAND = 3;
@@ -69,6 +70,9 @@ export default class Parser {
       case Token.TOKEN_TYPE.IDENT :
         leftExp =  this.parseIdentifier();
         break;
+      case Token.TOKEN_TYPE.INT :
+        leftExp =  this.parseIntegerLiteral();
+        break;
       default :
         leftExp = undefined;
     }
@@ -81,6 +85,15 @@ export default class Parser {
     return new Identifier(
       this.curToken,
       this.curToken.Literal
+    );
+  }
+  /*
+   * parse IntegerLiteral
+   */
+  parseIntegerLiteral(){
+    return new IntegerLiteral(
+      this.curToken,
+      parseInt(this.curToken.Literal)
     );
   }
   /*

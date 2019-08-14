@@ -81,9 +81,10 @@ describe('Parser', () => {
     test('parse expression statements', () => {
       const i = new Parser(new Lexer(`
         foobar;
+        10;
       `));
       const stmt = i.ParseProgram();
-      expect(stmt.Statements.length).toBe(1);
+      expect(stmt.Statements.length).toBe(2);
       expect(stmt.Statements[0].constructor.name).toBe('ExpressionStatement');
       expect(stmt.Statements[0].Token.constructor.name).toBe('Token');
       expect(stmt.Statements[0].Token.Type).toBe(Token.TOKEN_TYPE.IDENT);
@@ -92,6 +93,15 @@ describe('Parser', () => {
       expect(stmt.Statements[0].Expression.Token.Type).toBe(Token.TOKEN_TYPE.IDENT);
       expect(stmt.Statements[0].Expression.Token.Literal).toBe('foobar');
       expect(stmt.Statements[0].Expression.Value).toBe('foobar');
+
+      expect(stmt.Statements[1].constructor.name).toBe('ExpressionStatement');
+      expect(stmt.Statements[1].Token.constructor.name).toBe('Token');
+      expect(stmt.Statements[1].Token.Type).toBe(Token.TOKEN_TYPE.INT);
+      expect(stmt.Statements[1].Token.Literal).toBe('10');
+      expect(stmt.Statements[1].Expression.constructor.name).toBe('IntegerLiteral');
+      expect(stmt.Statements[1].Expression.Token.Type).toBe(Token.TOKEN_TYPE.INT);
+      expect(stmt.Statements[1].Expression.Token.Literal).toBe('10');
+      expect(stmt.Statements[1].Expression.Value).toBe(10);
     });
   });
   describe('Errors', () => {
