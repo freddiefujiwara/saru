@@ -14,7 +14,7 @@ function main () {
   ReadlineSync.promptLoop(function(input){
     let l = new Lexer(input);
     for(let t = l.NextToken();
-      Token.TOKEN_TYPE.EOF !== t.type ; t = l.NextToken()){
+      Token.TOKEN_TYPE.EOF !== t.Type ; t = l.NextToken()){
       console.log(`${t}`);
     }
     return "bye" === input;

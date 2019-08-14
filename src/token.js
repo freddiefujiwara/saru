@@ -9,6 +9,13 @@ export default class Token {
     this[_literal] = literal;
   }
   /*
+   * string expression
+   * console.log(Token) # -> "Token {}"
+   */
+  toString(){
+    return `Token { type: '${this[_type]}', literal: '${this[_literal]}' }`;
+  }
+  /*
    * getter for Type
    */
   get Type(){

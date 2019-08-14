@@ -34,15 +34,22 @@ describe('Token', () => {
     });
   });
   describe('Type', () => {
-    test('string expression', () => {
+    test('get this[_type]', () => {
       const i = new Token('INT', '10');
       expect(i.Type).toBe('INT');
     });
   });
   describe('Literal', () => {
-    test('string expression', () => {
+    test('get this[_literal]', () => {
       const i = new Token('INT', '10');
       expect(i.Literal).toBe('10');
+    });
+  });
+  describe('toString', () => {
+    test('string expression', () => {
+      const i = new Token('INT', '10');
+      const str = `${i}`;
+      expect(str).toBe("Token { type: 'INT', literal: '10' }");
     });
   });
 });
