@@ -2,7 +2,7 @@ import Token from '../src/token';
 describe('Token', () => {
   describe('constructer', () => {
     test('new Token', () => {
-      let i = new Token('INT', '10');
+      const i = new Token('INT', '10');
       expect(i.type).toBe('INT');
       expect(i.literal).toBe('10');
       expect(Token.TOKEN_TYPE.COMMA).toBe(',');
@@ -12,7 +12,7 @@ describe('Token', () => {
     test('Token.LookupIdent("c")', () => {
       expect(typeof Token.LookupIdent).toBe('function');
       expect(Token.LookupIdent('ident')).toBe(Token.TOKEN_TYPE.IDENT);
-      let expectation = {
+      const expectation = {
         'as': Token.TOKEN_TYPE.AS,
         'import': Token.TOKEN_TYPE.IMPORT,
         'fn': Token.TOKEN_TYPE.FUNCTION,
@@ -27,7 +27,7 @@ describe('Token', () => {
         'and': Token.TOKEN_TYPE.LAND,
         'or': Token.TOKEN_TYPE.LOR
       };
-      let keys = Object.keys(expectation);
+      const keys = Object.keys(expectation);
       for(const key of keys){
         expect(Token.LookupIdent(key)).toBe(expectation[key]);
       }

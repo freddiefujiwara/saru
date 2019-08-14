@@ -3,7 +3,7 @@ import Token from '../src/token';
 describe('Lexer', () => {
   describe('constructor', () => {
     test('for constructor with member variables', () => {
-      let i = new Lexer('INT');
+      const i = new Lexer('INT');
       expect(i.input).toBe('INT');
       expect(i.position).toBe(0);
       expect(i.readPosition).toBe(1);
@@ -12,7 +12,7 @@ describe('Lexer', () => {
   });
   describe('readChar', () => {
     test('for reading single chars', () => {
-      let i = new Lexer('INT');
+      const i = new Lexer('INT');
       expect(typeof i.readChar).toBe('function');
       expect(i.position).toBe(0);
       expect(i.readPosition).toBe(1);
@@ -59,16 +59,16 @@ describe('Lexer', () => {
           [Token.TOKEN_TYPE.COLON,    ':'],
           [Token.TOKEN_TYPE.EOF,    '' ]];
 
-      let i = new Lexer('=+-!/*%&|.^~<>;,{}()[]:');
+      const i = new Lexer('=+-!/*%&|.^~<>;,{}()[]:');
       expect(typeof i.NextToken).toBe('function');
       for( const expectedPair of expectedPairs){
-        let t = i.NextToken();
+        const t = i.NextToken();
         expect(t.type).toBe(expectedPair[0]);
         expect(t.literal).toBe(expectedPair[1]);
       }
     });
     test('for actual code', () => {
-      let i = new Lexer(`
+      const i = new Lexer(`
       let five = 5;
       let ten = 10;@
       let string = 'single';
@@ -139,7 +139,7 @@ describe('Lexer', () => {
         [Token.TOKEN_TYPE.SEMICOLON, ';'],
         [Token.TOKEN_TYPE.EOF, '']];
       for( const expectedPair of expectedPairs){
-        let t = i.NextToken();
+        const t = i.NextToken();
         expect(t.type).toBe(expectedPair[0]);
         expect(t.literal).toBe(expectedPair[1]);
       }
@@ -165,7 +165,7 @@ describe('Lexer', () => {
   });
   describe('readIdentifier', () => {
     test('for identifierable text', () => {
-      let i = new Lexer('let \tme \r\nknow_that');
+      const i = new Lexer('let \tme \r\nknow_that');
       expect(typeof i.readIdentifier).toBe('function');
       expect(i.readIdentifier()).toBe('let');
       i.skipWhitespace();
@@ -190,20 +190,20 @@ describe('Lexer', () => {
   });
   describe('skipWhitespace', () => {
     test('for white spaces', () => {
-      let i = new Lexer('let me know_that');
+      const i = new Lexer('let me know_that');
       expect(typeof i.skipWhitespace).toBe('function');
     });
   });
   describe('readNumber', () => {
     test('for numbers', () => {
-      let i = new Lexer('100');
+      const i = new Lexer('100');
       expect(typeof i.readNumber).toBe('function');
       expect(i.readNumber()).toBe('100');
     });
   });
   describe('peekChar', () => {
     test('for reading single chars', () => {
-      let i = new Lexer('INT');
+      const i = new Lexer('INT');
       expect(typeof i.peekChar).toBe('function');
       expect(i.position).toBe(0);
       expect(i.readPosition).toBe(1);

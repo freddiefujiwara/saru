@@ -15,7 +15,7 @@ function main () {
     let l = new Lexer(input);
     for(let t = l.NextToken();
       Token.TOKEN_TYPE.EOF !== t.type ; t = l.NextToken()){
-      console.log(t);
+      console.log(`${t}`);
     }
     return "bye" === input;
   });

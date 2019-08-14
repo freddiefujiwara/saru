@@ -6,6 +6,9 @@ export default class Token {
     this.type = type;
     this.literal = literal;
   }
+  /*
+   * lookup identifier
+   */
   static LookupIdent(ident){
     if (Token.KEYWORDS[ident]){
       return Token.KEYWORDS[ident];

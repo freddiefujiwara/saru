@@ -4,7 +4,7 @@ import Parser from '../src/parser';
 describe('Parser', () => {
   describe('constructer', () => {
     test('new Parser', () => {
-      let i = new Parser(new Lexer('let var = 10;'));
+      const i = new Parser(new Lexer('let var = 10;'));
       expect(i.lexer.input).toBe('let var = 10;');
       expect(i.errors.length).toBe(0);
     });
@@ -12,7 +12,7 @@ describe('Parser', () => {
   describe('nextToken', () => {
     test('for reading single token', () => {
       // Parser.constructor runs nextToken twice
-      let i = new Parser(new Lexer('let var = 10;'));
+      const i = new Parser(new Lexer('let var = 10;'));
       expect(typeof i.nextToken).toBe('function');
       expect(i.curToken.type).toBe(Token.TOKEN_TYPE.LET);
       expect(i.curToken.literal).toBe('let');
@@ -62,13 +62,13 @@ describe('Parser', () => {
       expect(stmt).not.toBe(undefined);
     });
     test('parse return statements', () => {
-      let i = new Parser(new Lexer(`
+      const i = new Parser(new Lexer(`
         return 5;
         return 10;
         return 993322;
       `));
       expect(typeof i.ParseProgram).toBe('function');
-      let stmt = i.ParseProgram();
+      const stmt = i.ParseProgram();
       expect(stmt.statements.length).toBe(3);
       const expectedIdentifiers = ['5','10','993322'];
       for(let ind = 0; ind < expectedIdentifiers.length; ind++){
@@ -81,14 +81,14 @@ describe('Parser', () => {
   });
   describe('Errors', () => {
     test('check current errors', () => {
-      let i = new Parser(new Lexer('let var = 10;'));
+      const i = new Parser(new Lexer('let var = 10;'));
       expect(typeof i.Errors).toBe('object');
       expect(i.Errors.length).toBe(0);
     });
   });
   describe('peekError', () => {
     test('add peek error and check', () => {
-      let i = new Parser(new Lexer('let var = 10;'));
+      const i = new Parser(new Lexer('let var = 10;'));
       expect(typeof i.peekError).toBe('function');
       i.peekError(Token.TOKEN_TYPE.INT);
       expect(i.Errors.length).toBe(1);

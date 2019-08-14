@@ -5,6 +5,13 @@ export default class Node {
   constructor(){
   }
   /*
+   * string expression
+   * console.log(node) # -> "Node {}"
+   */
+  toString(){
+    return `Node {}`;
+  }
+  /*
    * Token literal
    */
   TokenLiteral(){
