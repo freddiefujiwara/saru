@@ -9,6 +9,14 @@ describe('Identifier', () => {
       expect(i.value).toBe(undefined);
     });
   });
+  describe('toString', () => {
+    test('string expression', () => {
+      const i = new Identifier(undefined,'value');
+      expect(typeof i.toString).toBe('function');
+      const str = `${i}`;
+      expect(str).toBe("value");
+    });
+  });
   describe('expressionNode', () => {
     test('only check the existence', () => {
       const i = new Identifier();

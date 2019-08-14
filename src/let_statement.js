@@ -3,11 +3,11 @@ export default class LetStatement extends Statement {
   /*
    * @constructor
    */
-  constructor(){
+  constructor(token = undefined , name = undefined , value = undefined){
     super();
-    this.token = undefined;
-    this.name = undefined;
-    this.value = undefined;
+    this.token = token;
+    this.name = name;
+    this.value = value;
   }
   /*
    * get statementNode
@@ -15,9 +15,15 @@ export default class LetStatement extends Statement {
   statementNode(){
   }
   /*
+   * string expression
+   */
+  toString(){
+    return `${this.TokenLiteral()} ${this.name} = ${this.value}`;
+  }
+  /*
    * Token literal
    */
   TokenLiteral(){
-    return this.token.literal;
+    return this.token.Literal;
   }
 }

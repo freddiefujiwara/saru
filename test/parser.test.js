@@ -14,10 +14,10 @@ describe('Parser', () => {
       // Parser.constructor runs nextToken twice
       const i = new Parser(new Lexer('let var = 10;'));
       expect(typeof i.nextToken).toBe('function');
-      expect(i.curToken.type).toBe(Token.TOKEN_TYPE.LET);
-      expect(i.curToken.literal).toBe('let');
-      expect(i.peekToken.type).toBe(Token.TOKEN_TYPE.IDENT);
-      expect(i.peekToken.literal).toBe('var');
+      expect(i.curToken.Type).toBe(Token.TOKEN_TYPE.LET);
+      expect(i.curToken.Literal).toBe('let');
+      expect(i.peekToken.Type).toBe(Token.TOKEN_TYPE.IDENT);
+      expect(i.peekToken.Literal).toBe('var');
     });
   });
   describe('ParseProgram', () => {
@@ -37,11 +37,11 @@ describe('Parser', () => {
       for(let ind = 0; ind < expectedIdentifiers.length; ind++){
         expect(stmt.statements[ind].constructor.name).toBe('LetStatement');
         expect(stmt.statements[ind].token.constructor.name).toBe('Token');
-        expect(stmt.statements[ind].token.type).toBe(Token.TOKEN_TYPE.LET);
-        expect(stmt.statements[ind].token.literal).toBe('let');
+        expect(stmt.statements[ind].token.Type).toBe(Token.TOKEN_TYPE.LET);
+        expect(stmt.statements[ind].token.Literal).toBe('let');
         expect(stmt.statements[ind].name.constructor.name).toBe('Identifier');
-        expect(stmt.statements[ind].name.token.type).toBe(Token.TOKEN_TYPE.IDENT);
-        expect(stmt.statements[ind].name.token.literal).toBe(expectedIdentifiers[ind]);
+        expect(stmt.statements[ind].name.token.Type).toBe(Token.TOKEN_TYPE.IDENT);
+        expect(stmt.statements[ind].name.token.Literal).toBe(expectedIdentifiers[ind]);
         expect(stmt.statements[ind].name.value).toBe(expectedIdentifiers[ind]);
       }
       const expectedErrors = [
@@ -74,8 +74,8 @@ describe('Parser', () => {
       for(let ind = 0; ind < expectedIdentifiers.length; ind++){
         expect(stmt.statements[ind].constructor.name).toBe('ReturnStatement');
         expect(stmt.statements[ind].token.constructor.name).toBe('Token');
-        expect(stmt.statements[ind].token.type).toBe(Token.TOKEN_TYPE.RETURN);
-        expect(stmt.statements[ind].token.literal).toBe('return');
+        expect(stmt.statements[ind].token.Type).toBe(Token.TOKEN_TYPE.RETURN);
+        expect(stmt.statements[ind].token.Literal).toBe('return');
       }
     });
   });

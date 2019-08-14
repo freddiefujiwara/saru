@@ -3,8 +3,8 @@ describe('Token', () => {
   describe('constructer', () => {
     test('new Token', () => {
       const i = new Token('INT', '10');
-      expect(i.type).toBe('INT');
-      expect(i.literal).toBe('10');
+      expect(i.Type).toBe('INT');
+      expect(i.Literal).toBe('10');
       expect(Token.TOKEN_TYPE.COMMA).toBe(',');
     });
   });
@@ -31,6 +31,18 @@ describe('Token', () => {
       for(const key of keys){
         expect(Token.LookupIdent(key)).toBe(expectation[key]);
       }
+    });
+  });
+  describe('Type', () => {
+    test('string expression', () => {
+      const i = new Token('INT', '10');
+      expect(i.Type).toBe('INT');
+    });
+  });
+  describe('Literal', () => {
+    test('string expression', () => {
+      const i = new Token('INT', '10');
+      expect(i.Literal).toBe('10');
     });
   });
 });

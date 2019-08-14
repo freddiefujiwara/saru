@@ -1,10 +1,24 @@
+const _type = Symbol('type');
+const _literal = Symbol('literal');
 export default class Token {
   /*
    * @constructor
    */
   constructor(type , literal){
-    this.type = type;
-    this.literal = literal;
+    this[_type] = type;
+    this[_literal] = literal;
+  }
+  /*
+   * getter for Type
+   */
+  get Type(){
+    return this[_type];
+  }
+  /*
+   * getter for Literal
+   */
+  get Literal(){
+    return this[_literal];
   }
   /*
    * lookup identifier

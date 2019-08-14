@@ -27,7 +27,7 @@ export default class Parser {
    */
   ParseProgram(){
     const p = new Program();
-    for(;Token.TOKEN_TYPE.EOF !== this.curToken.type;
+    for(;Token.TOKEN_TYPE.EOF !== this.curToken.Type;
       this.nextToken()){
       const stmt = this.parseStatement();
       if(undefined !== stmt){
@@ -40,11 +40,11 @@ export default class Parser {
    * parse Statement
    */
   parseStatement(){
-    switch(this.curToken.type){
-    case Token.TOKEN_TYPE.LET :
-      return this.parseLetStatement();
-    case Token.TOKEN_TYPE.RETURN :
-      return this.parseReturnStatement();
+    switch(this.curToken.Type){
+      case Token.TOKEN_TYPE.LET :
+        return this.parseLetStatement();
+      case Token.TOKEN_TYPE.RETURN :
+        return this.parseReturnStatement();
     }
     return undefined;
   }
@@ -52,15 +52,17 @@ export default class Parser {
    * parse LetStatement
    */
   parseLetStatement(){
-    const stmt = new LetStatement();
-    stmt.token = this.curToken;
+    const letToken = this.curToken;
     if(!this.expectPeek(Token.TOKEN_TYPE.IDENT)){
       return undefined;
     }
-    const ident = new Identifier();
-    ident.token = this.curToken;
-    ident.value = this.curToken.literal;
-    stmt.name = ident;
+    const stmt = new LetStatement(
+      letToken,
+      new Identifier(
+        this.curToken,
+        this.curToken.Literal
+      )
+    );
     if(!this.expectPeek(Token.TOKEN_TYPE.ASSIGN)){
       return undefined;
     }
@@ -86,14 +88,14 @@ export default class Parser {
    */
   curTokenIs(type){
     return undefined !== this.curToken &&
-      this.curToken.type === type;
+      this.curToken.Type === type;
   }
   /*
    * check peekToken
    */
   peekTokenIs(type){
     return undefined !== this.peekToken &&
-      this.peekToken.type === type;
+      this.peekToken.Type === type;
   }
   /*
    * expect peekToken
@@ -111,7 +113,7 @@ export default class Parser {
    */
   peekError(type){
     this.errors.push(
-      `expected next token to be ${type}, got ${this.peekToken.type} instead`
+      `expected next token to be ${type}, got ${this.peekToken.Type} instead`
     );
   }
   /*

@@ -63,8 +63,8 @@ describe('Lexer', () => {
       expect(typeof i.NextToken).toBe('function');
       for( const expectedPair of expectedPairs){
         const t = i.NextToken();
-        expect(t.type).toBe(expectedPair[0]);
-        expect(t.literal).toBe(expectedPair[1]);
+        expect(t.Type).toBe(expectedPair[0]);
+        expect(t.Literal).toBe(expectedPair[1]);
       }
     });
     test('for actual code', () => {
@@ -140,8 +140,8 @@ describe('Lexer', () => {
         [Token.TOKEN_TYPE.EOF, '']];
       for( const expectedPair of expectedPairs){
         const t = i.NextToken();
-        expect(t.type).toBe(expectedPair[0]);
-        expect(t.literal).toBe(expectedPair[1]);
+        expect(t.Type).toBe(expectedPair[0]);
+        expect(t.Literal).toBe(expectedPair[1]);
       }
     });
   });

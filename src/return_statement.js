@@ -18,6 +18,6 @@ export default class ReturnStatement extends Statement {
    * Token literal
    */
   TokenLiteral(){
-    return this.token.literal;
+    return this.token.Literal;
   }
 }

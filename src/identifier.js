@@ -3,10 +3,16 @@ export default class Identifier extends Expression {
   /*
    * @constructor
    */
-  constructor(){
+  constructor(token = undefined , value = undefined){
     super();
-    this.token = undefined;
-    this.value = undefined;
+    this.token = token;
+    this.value = value;
+  }
+  /*
+   * string expression
+   */
+  toString(){
+    return `${this.value}`;
   }
   /*
    * get expressionNode
@@ -17,6 +23,6 @@ export default class Identifier extends Expression {
    * Token literal
    */
   TokenLiteral(){
-    return this.token.literal;
+    return this.token.Literal;
   }
 }
