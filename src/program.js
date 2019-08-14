@@ -5,15 +5,15 @@ export default class Program extends Node {
    */
   constructor(){
     super();
-    this.statements = [];
+    this.Statements = [];
   }
   /*
    * Token literal
    */
   TokenLiteral(){
-    if(0 < this.statements.length
-      && typeof this.statements[0].TokenLiteral === 'function'){
-      return this.statements[0].TokenLiteral();
+    if(0 < this.Statements.length
+      && typeof this.Statements[0].TokenLiteral === 'function'){
+      return this.Statements[0].TokenLiteral();
     }
     return '';
   }

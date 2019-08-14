@@ -1,29 +1,45 @@
 import Statement from '../src/statement';
+const _token = Symbol('token');
+const _name = Symbol('name');
+const _value = Symbol('value');
 export default class LetStatement extends Statement {
   /*
    * @constructor
    */
   constructor(token = undefined , name = undefined , value = undefined){
     super();
-    this.token = token;
-    this.name = name;
-    this.value = value;
+    this[_token] = token;
+    this[_name] = name;
+    this[_value] = value;
   }
   /*
-   * get statementNode
+   * getter for token
    */
-  statementNode(){
+  get Token(){
+    return this[_token];
+  }
+  /*
+   * getter for name
+   */
+  get Name(){
+    return this[_name];
+  }
+  /*
+   * getter for value
+   */
+  get Value(){
+    return this[_value];
   }
   /*
    * string expression
    */
   toString(){
-    return `${this.TokenLiteral()} ${this.name} = ${this.value}`;
+    return `${this.TokenLiteral()} ${this[_name]} = ${this[_value]}`;
   }
   /*
    * Token literal
    */
   TokenLiteral(){
-    return this.token.Literal;
+    return this[_token].Literal;
   }
 }

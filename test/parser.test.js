@@ -32,17 +32,17 @@ describe('Parser', () => {
       `));
       expect(typeof i.ParseProgram).toBe('function');
       let stmt = i.ParseProgram();
-      expect(stmt.statements.length).toBe(3);
+      expect(stmt.Statements.length).toBe(3);
       const expectedIdentifiers = ['x','y','foobar'];
       for(let ind = 0; ind < expectedIdentifiers.length; ind++){
-        expect(stmt.statements[ind].constructor.name).toBe('LetStatement');
-        expect(stmt.statements[ind].token.constructor.name).toBe('Token');
-        expect(stmt.statements[ind].token.Type).toBe(Token.TOKEN_TYPE.LET);
-        expect(stmt.statements[ind].token.Literal).toBe('let');
-        expect(stmt.statements[ind].name.constructor.name).toBe('Identifier');
-        expect(stmt.statements[ind].name.token.Type).toBe(Token.TOKEN_TYPE.IDENT);
-        expect(stmt.statements[ind].name.token.Literal).toBe(expectedIdentifiers[ind]);
-        expect(stmt.statements[ind].name.value).toBe(expectedIdentifiers[ind]);
+        expect(stmt.Statements[ind].constructor.name).toBe('LetStatement');
+        expect(stmt.Statements[ind].Token.constructor.name).toBe('Token');
+        expect(stmt.Statements[ind].Token.Type).toBe(Token.TOKEN_TYPE.LET);
+        expect(stmt.Statements[ind].Token.Literal).toBe('let');
+        expect(stmt.Statements[ind].Name.constructor.name).toBe('Identifier');
+        expect(stmt.Statements[ind].Name.Token.Type).toBe(Token.TOKEN_TYPE.IDENT);
+        expect(stmt.Statements[ind].Name.Token.Literal).toBe(expectedIdentifiers[ind]);
+        expect(stmt.Statements[ind].Name.Value).toBe(expectedIdentifiers[ind]);
       }
       const expectedErrors = [
         'expected next token to be =, got INT instead',
@@ -69,13 +69,13 @@ describe('Parser', () => {
       `));
       expect(typeof i.ParseProgram).toBe('function');
       const stmt = i.ParseProgram();
-      expect(stmt.statements.length).toBe(3);
+      expect(stmt.Statements.length).toBe(3);
       const expectedIdentifiers = ['5','10','993322'];
       for(let ind = 0; ind < expectedIdentifiers.length; ind++){
-        expect(stmt.statements[ind].constructor.name).toBe('ReturnStatement');
-        expect(stmt.statements[ind].token.constructor.name).toBe('Token');
-        expect(stmt.statements[ind].token.Type).toBe(Token.TOKEN_TYPE.RETURN);
-        expect(stmt.statements[ind].token.Literal).toBe('return');
+        expect(stmt.Statements[ind].constructor.name).toBe('ReturnStatement');
+        expect(stmt.Statements[ind].Token.constructor.name).toBe('Token');
+        expect(stmt.Statements[ind].Token.Type).toBe(Token.TOKEN_TYPE.RETURN);
+        expect(stmt.Statements[ind].Token.Literal).toBe('return');
       }
     });
   });

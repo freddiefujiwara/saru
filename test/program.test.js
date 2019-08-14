@@ -5,7 +5,7 @@ describe('Program', () => {
     test('new Program', () => {
       const i = new Program();
       expect(i).not.toBeNull();
-      expect(i.statements.length).toBe(0);
+      expect(i.Statements.length).toBe(0);
     });
   });
   describe('TokenLiteral', () => {
@@ -13,7 +13,7 @@ describe('Program', () => {
       const i = new Program();
       expect(typeof i.TokenLiteral).toBe('function');
       expect(i.TokenLiteral()).toBe('');
-      i.statements.push(new Statement());
+      i.Statements.push(new Statement());
       expect(i.TokenLiteral()).toBe(undefined);
     });
   });

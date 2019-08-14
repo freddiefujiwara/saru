@@ -5,9 +5,6 @@ describe('ReturnStatement', () => {
     test('new ReturnStatement', () => {
       const i = new ReturnStatement();
       expect(i).not.toBeNull();
-      expect(i.token).toBe(undefined);
-      expect(i.name).toBe(undefined);
-      expect(i.value).toBe(undefined);
     });
   });
   describe('statementNode', () => {
@@ -19,10 +16,14 @@ describe('ReturnStatement', () => {
   });
   describe('TokenLiteral', () => {
     test('only check the existence', () => {
-      const i = new ReturnStatement();
+      const i = new ReturnStatement(
+        new Token('INT','10')
+      );
+      expect(i.Token).not.toBe(undefined);
+      expect(i.ReturnValue).toBe(undefined);
       expect(typeof i.TokenLiteral).toBe('function');
-      i.token = new Token('INT','10');
       i.TokenLiteral();
+      expect(i.TokenLiteral()).toBe('10');
     });
   });
 });

@@ -31,7 +31,7 @@ export default class Parser {
       this.nextToken()){
       const stmt = this.parseStatement();
       if(undefined !== stmt){
-        p.statements.push(stmt);
+        p.Statements.push(stmt);
       }
     }
     return p;
@@ -75,8 +75,9 @@ export default class Parser {
    * parse ReturnStatement
    */
   parseReturnStatement(){
-    const stmt = new ReturnStatement();
-    stmt.token = this.curToken;
+    const stmt = new ReturnStatement(
+      this.curToken
+    );
     this.nextToken();
     while(!this.curTokenIs(Token.TOKEN_TYPE.SEMICOLON)){
       this.nextToken();

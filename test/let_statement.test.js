@@ -18,6 +18,7 @@ describe('LetStatement', () => {
         new Identifier(undefined,'val')
       );
       expect(typeof i.toString).toBe('function');
+      expect(i.Value).toBe(undefined);
       const str = `${i}`;
       expect(str).toBe("let val = undefined");
     });
@@ -36,6 +37,7 @@ describe('LetStatement', () => {
       );
       expect(typeof i.TokenLiteral).toBe('function');
       i.TokenLiteral();
+      expect(i.TokenLiteral()).toBe('10');
     });
   });
 });

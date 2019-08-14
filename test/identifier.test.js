@@ -26,9 +26,10 @@ describe('Identifier', () => {
   });
   describe('TokenLiteral', () => {
     test('only check the existence', () => {
-      const i = new Identifier();
+      const i = new Identifier(
+        new Token('INT','10')
+      );
       expect(typeof i.TokenLiteral).toBe('function');
-      i.token = new Token('INT','10');
       i.TokenLiteral();
     });
   });
