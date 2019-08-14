@@ -4,9 +4,9 @@ describe('Lexer', () => {
   describe('constructor', () => {
     test('for constructor with member variables', () => {
       const i = new Lexer('INT');
-      expect(i.input).toBe('INT');
-      expect(i.position).toBe(0);
-      expect(i.readPosition).toBe(1);
+      expect(i.Input).toBe('INT');
+      expect(i.Position).toBe(0);
+      expect(i.ReadPosition).toBe(1);
       expect(i.ch).toBe('I');
     });
   });
@@ -14,20 +14,20 @@ describe('Lexer', () => {
     test('for reading single chars', () => {
       const i = new Lexer('INT');
       expect(typeof i.readChar).toBe('function');
-      expect(i.position).toBe(0);
-      expect(i.readPosition).toBe(1);
+      expect(i.Position).toBe(0);
+      expect(i.ReadPosition).toBe(1);
       expect(i.ch).toBe('I');
       i.readChar();
-      expect(i.position).toBe(1);
-      expect(i.readPosition).toBe(2);
+      expect(i.Position).toBe(1);
+      expect(i.ReadPosition).toBe(2);
       expect(i.ch).toBe('N');
       i.readChar();
-      expect(i.position).toBe(2);
-      expect(i.readPosition).toBe(3);
+      expect(i.Position).toBe(2);
+      expect(i.ReadPosition).toBe(3);
       expect(i.ch).toBe('T');
       i.readChar();
-      expect(i.position).toBe(3);
-      expect(i.readPosition).toBe(4);
+      expect(i.Position).toBe(3);
+      expect(i.ReadPosition).toBe(4);
       expect(i.ch).toBe(0);
     });
   });
@@ -205,12 +205,12 @@ describe('Lexer', () => {
     test('for reading single chars', () => {
       const i = new Lexer('INT');
       expect(typeof i.peekChar).toBe('function');
-      expect(i.position).toBe(0);
-      expect(i.readPosition).toBe(1);
+      expect(i.Position).toBe(0);
+      expect(i.ReadPosition).toBe(1);
       expect(i.ch).toBe('I');
       i.peekChar();
-      expect(i.position).toBe(0);
-      expect(i.readPosition).toBe(1);
+      expect(i.Position).toBe(0);
+      expect(i.ReadPosition).toBe(1);
       expect(i.ch).toBe('I');
     });
   });

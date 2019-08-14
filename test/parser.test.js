@@ -5,7 +5,7 @@ describe('Parser', () => {
   describe('constructer', () => {
     test('new Parser', () => {
       const i = new Parser(new Lexer('let var = 10;'));
-      expect(i.lexer.input).toBe('let var = 10;');
+      expect(i.lexer.Input).toBe('let var = 10;');
       expect(i.errors.length).toBe(0);
     });
   });
