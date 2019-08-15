@@ -1,23 +1,17 @@
 import Statement from '../src/statement';
+const _returnValue = Symbol('returnValue');
 export default class ReturnStatement extends Statement {
+  /*
+   * getter for returnValue
+   */
+  get ReturnValue(){
+    return this[_returnValue];
+  }
   /*
    * @constructor
    */
-  constructor(){
-    super();
-    this.token = undefined;
-    this.name = undefined;
-    this.value = undefined;
-  }
-  /*
-   * get statementNode
-   */
-  statementNode(){
-  }
-  /*
-   * Token literal
-   */
-  TokenLiteral(){
-    return this.token.literal;
+  constructor(token = undefined , returnValue = undefined){
+    super(token);
+    this[_returnValue] = returnValue;
   }
 }

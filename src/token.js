@@ -1,16 +1,40 @@
+const _type = Symbol('type');
+const _literal = Symbol('literal');
 export default class Token {
   /*
-   * @constructor
+   * string expression
+   * console.log(Token) # -> "Token { type: 'type', literal: 'literal' }"
    */
-  constructor(type , literal){
-    this.type = type;
-    this.literal = literal;
+  toString(){
+    return `Token { type: '${this[_type]}', literal: '${this[_literal]}' }`;
   }
+  /*
+   * getter for Type
+   */
+  get Type(){
+    return this[_type];
+  }
+  /*
+   * getter for Literal
+   */
+  get Literal(){
+    return this[_literal];
+  }
+  /*
+   * lookup identifier
+   */
   static LookupIdent(ident){
     if (Token.KEYWORDS[ident]){
       return Token.KEYWORDS[ident];
     }
     return Token.TOKEN_TYPE.IDENT;
+  }
+  /*
+   * @constructor
+   */
+  constructor(type , literal){
+    this[_type] = type;
+    this[_literal] = literal;
   }
   static get TOKEN_TYPE(){
     return {

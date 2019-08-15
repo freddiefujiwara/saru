@@ -1,20 +1,26 @@
 import Node from '../src/node';
 export default class Program extends Node {
   /*
+   * Token literal
+   */
+  TokenLiteral(){
+    if(0 < this.Statements.length
+      && typeof this.Statements[0].TokenLiteral === 'function'){
+      return this.Statements[0].TokenLiteral();
+    }
+    return '';
+  }
+  /*
+   * string expression
+   */
+  toString(){
+    return this.Statements.map( s => `${s}`).join('');
+  }
+  /*
    * @constructor
    */
   constructor(){
     super();
-    this.statements = [];
-  }
-  /*
-   * Token literal
-   */
-  TokenLiteral(){
-    if(0 < this.statements.length
-      && typeof this.statements[0].TokenLiteral === 'function'){
-      return this.statements[0].TokenLiteral();
-    }
-    return '';
+    this.Statements = [];
   }
 }

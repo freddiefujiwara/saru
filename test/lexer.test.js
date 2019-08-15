@@ -4,30 +4,14 @@ describe('Lexer', () => {
   describe('constructor', () => {
     test('for constructor with member variables', () => {
       let i = new Lexer('INT');
-      expect(i.input).toBe('INT');
-      expect(i.position).toBe(0);
-      expect(i.readPosition).toBe(1);
+      expect(i.Input).toBe('INT');
+      expect(i.Position).toBe(0);
+      expect(i.ReadPosition).toBe(1);
       expect(i.ch).toBe('I');
-    });
-  });
-  describe('readChar', () => {
-    test('for reading single chars', () => {
-      let i = new Lexer('INT');
-      expect(typeof i.readChar).toBe('function');
-      expect(i.position).toBe(0);
-      expect(i.readPosition).toBe(1);
-      expect(i.ch).toBe('I');
-      i.readChar();
-      expect(i.position).toBe(1);
-      expect(i.readPosition).toBe(2);
-      expect(i.ch).toBe('N');
-      i.readChar();
-      expect(i.position).toBe(2);
-      expect(i.readPosition).toBe(3);
-      expect(i.ch).toBe('T');
-      i.readChar();
-      expect(i.position).toBe(3);
-      expect(i.readPosition).toBe(4);
+      i = new Lexer('');
+      expect(i.Input).toBe('');
+      expect(i.Position).toBe(0);
+      expect(i.ReadPosition).toBe(1);
       expect(i.ch).toBe(0);
     });
   });
@@ -59,16 +43,16 @@ describe('Lexer', () => {
           [Token.TOKEN_TYPE.COLON,    ':'],
           [Token.TOKEN_TYPE.EOF,    '' ]];
 
-      let i = new Lexer('=+-!/*%&|.^~<>;,{}()[]:');
+      const i = new Lexer('=+-!/*%&|.^~<>;,{}()[]:');
       expect(typeof i.NextToken).toBe('function');
       for( const expectedPair of expectedPairs){
-        let t = i.NextToken();
-        expect(t.type).toBe(expectedPair[0]);
-        expect(t.literal).toBe(expectedPair[1]);
+        const t = i.NextToken();
+        expect(t.Type).toBe(expectedPair[0]);
+        expect(t.Literal).toBe(expectedPair[1]);
       }
     });
     test('for actual code', () => {
-      let i = new Lexer(`
+      const i = new Lexer(`
       let five = 5;
       let ten = 10;@
       let string = 'single';
@@ -139,9 +123,9 @@ describe('Lexer', () => {
         [Token.TOKEN_TYPE.SEMICOLON, ';'],
         [Token.TOKEN_TYPE.EOF, '']];
       for( const expectedPair of expectedPairs){
-        let t = i.NextToken();
-        expect(t.type).toBe(expectedPair[0]);
-        expect(t.literal).toBe(expectedPair[1]);
+        const t = i.NextToken();
+        expect(t.Type).toBe(expectedPair[0]);
+        expect(t.Literal).toBe(expectedPair[1]);
       }
     });
   });
@@ -163,17 +147,6 @@ describe('Lexer', () => {
       expect(Lexer.isLetter(0)).toBe(false);
     });
   });
-  describe('readIdentifier', () => {
-    test('for identifierable text', () => {
-      let i = new Lexer('let \tme \r\nknow_that');
-      expect(typeof i.readIdentifier).toBe('function');
-      expect(i.readIdentifier()).toBe('let');
-      i.skipWhitespace();
-      expect(i.readIdentifier()).toBe('me');
-      i.skipWhitespace();
-      expect(i.readIdentifier()).toBe('know_that');
-    });
-  });
   describe('static isDigit', () => {
     test('like Lexer.isDigit("c")', () => {
       expect(typeof Lexer.isDigit).toBe('function');
@@ -186,32 +159,6 @@ describe('Lexer', () => {
       expect(Lexer.isDigit('_')).toBe(false);
       expect(Lexer.isDigit(undefined)).toBe(false);
       expect(Lexer.isDigit(0)).toBe(false);
-    });
-  });
-  describe('skipWhitespace', () => {
-    test('for white spaces', () => {
-      let i = new Lexer('let me know_that');
-      expect(typeof i.skipWhitespace).toBe('function');
-    });
-  });
-  describe('readNumber', () => {
-    test('for numbers', () => {
-      let i = new Lexer('100');
-      expect(typeof i.readNumber).toBe('function');
-      expect(i.readNumber()).toBe('100');
-    });
-  });
-  describe('peekChar', () => {
-    test('for reading single chars', () => {
-      let i = new Lexer('INT');
-      expect(typeof i.peekChar).toBe('function');
-      expect(i.position).toBe(0);
-      expect(i.readPosition).toBe(1);
-      expect(i.ch).toBe('I');
-      i.peekChar();
-      expect(i.position).toBe(0);
-      expect(i.readPosition).toBe(1);
-      expect(i.ch).toBe('I');
     });
   });
 });
