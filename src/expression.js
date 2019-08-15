@@ -3,8 +3,8 @@ export default class Expression extends Node {
   /*
    * @constructor
    */
-  constructor(){
-    super();
+  constructor(token = undefined){
+    super(token);
   }
   /*
    * get expressionNode

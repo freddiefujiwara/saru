@@ -1,20 +1,12 @@
 import Expression from '../src/expression';
-const _token = Symbol('token');
 const _value = Symbol('value');
 export default class Identifier extends Expression {
   /*
    * @constructor
    */
   constructor(token = undefined , value = undefined){
-    super();
-    this[_token] = token;
+    super(token);
     this[_value] = value;
-  }
-  /*
-   * getter for token
-   */
-  get Token(){
-    return this[_token];
   }
   /*
    * getter for value
@@ -32,6 +24,6 @@ export default class Identifier extends Expression {
    * Token literal
    */
   TokenLiteral(){
-    return this[_token].Literal;
+    return this.Token.Literal;
   }
 }
