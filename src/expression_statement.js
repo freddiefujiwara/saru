@@ -2,13 +2,6 @@ import Statement from '../src/statement';
 const _expression = Symbol('expression');
 export default class ExpressionStatement extends Statement {
   /*
-   * @constructor
-   */
-  constructor(token = undefined , expression = undefined){
-    super(token);
-    this[_expression] = expression;
-  }
-  /*
    * getter for expression
    */
   get Expression(){
@@ -19,5 +12,12 @@ export default class ExpressionStatement extends Statement {
    */
   toString(){
     return `${this[_expression]}`;
+  }
+  /*
+   * @constructor
+   */
+  constructor(token = undefined , expression = undefined){
+    super(token);
+    this[_expression] = expression;
   }
 }

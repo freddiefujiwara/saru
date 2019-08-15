@@ -1,13 +1,6 @@
 import Node from '../src/node';
 export default class Program extends Node {
   /*
-   * @constructor
-   */
-  constructor(){
-    super();
-    this.Statements = [];
-  }
-  /*
    * Token literal
    */
   TokenLiteral(){
@@ -22,5 +15,12 @@ export default class Program extends Node {
    */
   toString(){
     return this.Statements.map( s => `${s}`).join(';\n');
+  }
+  /*
+   * @constructor
+   */
+  constructor(){
+    super();
+    this.Statements = [];
   }
 }

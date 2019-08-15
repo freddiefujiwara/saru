@@ -1,12 +1,6 @@
 const _token = Symbol('token');
 export default class Node {
   /*
-   * @constructor
-   */
-  constructor(token = undefined){
-    this[_token] = token;
-  }
-  /*
    * getter for token
    */
   get Token(){
@@ -25,5 +19,11 @@ export default class Node {
   TokenLiteral(){
     if(!this[_token]) return;
     return this[_token].Literal;
+  }
+  /*
+   * @constructor
+   */
+  constructor(token = undefined){
+    this[_token] = token;
   }
 }

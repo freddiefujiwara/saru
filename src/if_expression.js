@@ -4,15 +4,6 @@ const _consequence = Symbol('consequence');
 const _alternative = Symbol('alternative');
 export default class IfExpression extends Expression {
   /*
-   * @constructor
-   */
-  constructor(token = undefined , condition = undefined , consequence = undefined , alternative = undefined ){
-    super(token);
-    this[_condition] = condition;
-    this[_consequence] = consequence;
-    this[_alternative] = alternative;
-  }
-  /*
    * getter for expression
    */
   get Condition(){
@@ -37,5 +28,14 @@ export default class IfExpression extends Expression {
     const out = `${this[_condition]} ${this[_consequence]}`;
     if(!this[_alternative]) return out;
     return`${out} else ${this[_alternative]}`;
+  }
+  /*
+   * @constructor
+   */
+  constructor(token = undefined , condition = undefined , consequence = undefined , alternative = undefined ){
+    super(token);
+    this[_condition] = condition;
+    this[_consequence] = consequence;
+    this[_alternative] = alternative;
   }
 }

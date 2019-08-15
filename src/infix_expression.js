@@ -4,15 +4,6 @@ const _left = Symbol('left');
 const _right = Symbol('right');
 export default class InfixExpression extends Expression {
   /*
-   * @constructor
-   */
-  constructor(token = undefined , left = undefined , operator = undefined , right = undefined){
-    super(token);
-    this[_left] = left;
-    this[_operator] = operator;
-    this[_right] = right;
-  }
-  /*
    * getter for left
    */
   get Left(){
@@ -35,5 +26,14 @@ export default class InfixExpression extends Expression {
    */
   toString(){
     return `(${this[_left]} ${this[_operator]} ${this[_right] ? this[_right] : ''})`;
+  }
+  /*
+   * @constructor
+   */
+  constructor(token = undefined , left = undefined , operator = undefined , right = undefined){
+    super(token);
+    this[_left] = left;
+    this[_operator] = operator;
+    this[_right] = right;
   }
 }

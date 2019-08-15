@@ -2,13 +2,6 @@ const _type = Symbol('type');
 const _literal = Symbol('literal');
 export default class Token {
   /*
-   * @constructor
-   */
-  constructor(type , literal){
-    this[_type] = type;
-    this[_literal] = literal;
-  }
-  /*
    * string expression
    * console.log(Token) # -> "Token { type: 'type', literal: 'literal' }"
    */
@@ -35,6 +28,13 @@ export default class Token {
       return Token.KEYWORDS[ident];
     }
     return Token.TOKEN_TYPE.IDENT;
+  }
+  /*
+   * @constructor
+   */
+  constructor(type , literal){
+    this[_type] = type;
+    this[_literal] = literal;
   }
   static get TOKEN_TYPE(){
     return {

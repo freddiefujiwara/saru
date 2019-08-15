@@ -12,71 +12,6 @@ const _readComment = Symbol('readComment');
 const _skipWhiteSpace = Symbol('skipWhiteSpace');
 export default class Lexer {
   /*
-   * @constructor
-   * param {string} input
-   */
-  constructor(input){
-    this[_input] = input;
-    this[_position] = 0;
-    this[_readPosition] = 0;
-    this[_ch] = undefined;
-    // private methods
-    //   _peekChar
-    this[_peekChar] = () => {
-      if (this[_readPosition] >= this[_input].length) {
-        return 0;
-      }
-      return this[_input].charAt(this[_readPosition]);
-    };
-    //   _readChar
-    this[_readChar] = () => {
-      this[_ch] = this[_peekChar]();
-      this[_position] = this[_readPosition];
-      this[_readPosition]++;
-    };
-    //   _readIdentifier
-    this[_readIdentifier] = () =>{
-      const position = this[_position];
-      while (Lexer.isLetter(this[_ch])) {
-        this[_readChar]();
-      }
-      return this[_input].slice(position, this[_position]);
-    };
-    //   _readNumber
-    this[_readNumber] = () =>{
-      const position = this[_position];
-      while (Lexer.isDigit(this[_ch])) {
-        this[_readChar]();
-      }
-      return this[_input].slice(position, this[_position]);
-    };
-    //   _readString
-    this[_readString] = (type = '"') =>{
-      const position = this[_position] + 1;
-      this[_readChar]();
-      while (this[_ch] !== type && 0 !== this[_ch]) {
-        this[_readChar]();
-      }
-      return this[_input].slice(position, this[_position]);
-    };
-    //   _readComment
-    this[_readComment] = () =>{
-      const position = this[_position] + 1;
-      this[_readChar]();
-      while ('\n' !== this[_ch] && '\r' !== this[_ch] && 0 !== this[_ch]) {
-        this[_readChar]();
-      }
-      return this[_input].slice(position, this[_position]).trim();
-    };
-    //   _skipWhiteSpace
-    this[_skipWhiteSpace] = () =>{
-      while (-1 !== ' \t\n\r'.indexOf(this[_ch])){
-        this[_readChar]();
-      }
-    };
-    this[_readChar]();
-  }
-  /*
    * getter for input
    */
   get Input(){
@@ -226,5 +161,70 @@ export default class Lexer {
   static isDigit(ch) {
     if (!ch || 1 != ch.length) return false;
     return '0' <= ch && ch <= '9';
+  }
+  /*
+   * @constructor
+   * param {string} input
+   */
+  constructor(input){
+    this[_input] = input;
+    this[_position] = 0;
+    this[_readPosition] = 0;
+    this[_ch] = undefined;
+    // private methods
+    //   _peekChar
+    this[_peekChar] = () => {
+      if (this[_readPosition] >= this[_input].length) {
+        return 0;
+      }
+      return this[_input].charAt(this[_readPosition]);
+    };
+    //   _readChar
+    this[_readChar] = () => {
+      this[_ch] = this[_peekChar]();
+      this[_position] = this[_readPosition];
+      this[_readPosition]++;
+    };
+    //   _readIdentifier
+    this[_readIdentifier] = () =>{
+      const position = this[_position];
+      while (Lexer.isLetter(this[_ch])) {
+        this[_readChar]();
+      }
+      return this[_input].slice(position, this[_position]);
+    };
+    //   _readNumber
+    this[_readNumber] = () =>{
+      const position = this[_position];
+      while (Lexer.isDigit(this[_ch])) {
+        this[_readChar]();
+      }
+      return this[_input].slice(position, this[_position]);
+    };
+    //   _readString
+    this[_readString] = (type = '"') =>{
+      const position = this[_position] + 1;
+      this[_readChar]();
+      while (this[_ch] !== type && 0 !== this[_ch]) {
+        this[_readChar]();
+      }
+      return this[_input].slice(position, this[_position]);
+    };
+    //   _readComment
+    this[_readComment] = () =>{
+      const position = this[_position] + 1;
+      this[_readChar]();
+      while ('\n' !== this[_ch] && '\r' !== this[_ch] && 0 !== this[_ch]) {
+        this[_readChar]();
+      }
+      return this[_input].slice(position, this[_position]).trim();
+    };
+    //   _skipWhiteSpace
+    this[_skipWhiteSpace] = () =>{
+      while (-1 !== ' \t\n\r'.indexOf(this[_ch])){
+        this[_readChar]();
+      }
+    };
+    this[_readChar]();
   }
 }

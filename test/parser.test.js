@@ -9,17 +9,6 @@ describe('Parser', () => {
       expect(i.errors.length).toBe(0);
     });
   });
-  describe('nextToken', () => {
-    test('for reading single token', () => {
-      // Parser.constructor runs nextToken twice
-      const i = new Parser(new Lexer('let var = 10;'));
-      expect(typeof i.nextToken).toBe('function');
-      expect(i.curToken.Type).toBe(Token.TOKEN_TYPE.LET);
-      expect(i.curToken.Literal).toBe('let');
-      expect(i.peekToken.Type).toBe(Token.TOKEN_TYPE.IDENT);
-      expect(i.peekToken.Literal).toBe('var');
-    });
-  });
   describe('ParseProgram', () => {
     test('parse a let statement', () => {
       let i = new Parser(new Lexer(`
@@ -118,6 +107,7 @@ describe('Parser', () => {
       expect(i.Errors.length).toBe(0);
     });
   });
+  /*
   describe('peekError', () => {
     test('add peek error and check', () => {
       const i = new Parser(new Lexer('let var = 10;'));
@@ -126,4 +116,5 @@ describe('Parser', () => {
       expect(i.Errors.length).toBe(1);
     });
   });
+  */
 });

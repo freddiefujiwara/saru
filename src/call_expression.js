@@ -3,14 +3,6 @@ const _func = Symbol('func');
 const _args = Symbol('args');
 export default class CallExpression extends Expression {
   /*
-   * @constructor
-   */
-  constructor(token = undefined , func = undefined , args = []){
-    super(token);
-    this[_func] = func;
-    this[_args] = args;
-  }
-  /*
    * getter for expression
    */
   get Function(){
@@ -28,5 +20,13 @@ export default class CallExpression extends Expression {
   toString(){
     const args =  this[_args].map( s => `${s}`).join(', ');
     return `${this[_func]}(${args})`;
+  }
+  /*
+   * @constructor
+   */
+  constructor(token = undefined , func = undefined , args = []){
+    super(token);
+    this[_func] = func;
+    this[_args] = args;
   }
 }

@@ -3,14 +3,6 @@ const _name = Symbol('name');
 const _value = Symbol('value');
 export default class LetStatement extends Statement {
   /*
-   * @constructor
-   */
-  constructor(token = undefined , name = undefined , value = undefined){
-    super(token);
-    this[_name] = name;
-    this[_value] = value;
-  }
-  /*
    * getter for name
    */
   get Name(){
@@ -27,5 +19,13 @@ export default class LetStatement extends Statement {
    */
   toString(){
     return `${this.TokenLiteral()} ${this[_name]} = ${this[_value]}`;
+  }
+  /*
+   * @constructor
+   */
+  constructor(token = undefined , name = undefined , value = undefined){
+    super(token);
+    this[_name] = name;
+    this[_value] = value;
   }
 }
