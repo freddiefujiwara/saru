@@ -10,9 +10,30 @@ An interpreted language for NodeJS, based on Monkey
 npm i -g saru
 ```
 
-## Usage
+## Usage for Parser
 ```bash
   $ saru
+Hello fumikazu! This is the Monkey programming language!
+Feel free to type in commands
+* Please type 'bye' if you want to exit
+>>>
+```
+
+## Example
+```bash
+>>> 1 + 2 * 3
+(1 + (2 * 3))
+>>>
+1 * 2 - 3
+((1 * 2) - 3)
+>>>
+false == 1
+(false == 1)
+```
+
+## Usage for Lexer
+```bash
+  $ saru -l
 Hello fumikazu! This is the Monkey programming language!
 Feel free to type in commands
 * Please type 'bye' if you want to exit

@@ -1,6 +1,6 @@
 {
   "name": "saru",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "An interpreted language for NodeJS, based on Monkey",
   "main": "index.js",
   "bin": {
@@ -56,6 +56,7 @@
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {
+    "commander": "^3.0.0",
     "readline-sync": "^1.4.10",
     "semver": "^6.3.0"
   },
