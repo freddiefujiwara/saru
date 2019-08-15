@@ -25,6 +25,8 @@ const _curTokenIs = Symbol('curTokenIs');
 const _peekTokenIs = Symbol('peekTokenIs');
 const _expectPeek = Symbol('expectPeek');
 const _peekError = Symbol('peekError');
+const _errors = Symbol('errors');
+const _lexer = Symbol('lexer');
 const LOWEST = 1;
 /* to be used in future
 const LOR = 2;
@@ -58,20 +60,26 @@ export default class Parser {
    * return errors
    */
   get Errors(){
-    return this.errors;
+    return this[_errors];
+  }
+  /*
+   * return lexer
+   */
+  get Lexer(){
+    return this[_lexer];
   }
   /*
    * @constructor
    * param {Lexer} lexer
    */
   constructor(lexer){
-    this.lexer = lexer;
-    this.errors = [];
+    this[_lexer] = lexer;
+    this[_errors] = [];
     // private methods
     //   _nextToken
     this[_nextToken] = () =>{
       this.curToken = this.peekToken;
-      this.peekToken = this.lexer.NextToken();
+      this.peekToken = this[_lexer].NextToken();
     };
     //   _parseStatement
     this[_parseStatement] = () =>{
@@ -176,7 +184,7 @@ export default class Parser {
     };
     //   _peekError
     this[_peekError] = (type) =>{
-      this.errors.push(
+      this[_errors].push(
         `expected next token to be ${type}, got ${this.peekToken.Type} instead`
       );
     };

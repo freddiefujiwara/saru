@@ -5,8 +5,8 @@ describe('Parser', () => {
   describe('constructer', () => {
     test('new Parser', () => {
       const i = new Parser(new Lexer('let var = 10;'));
-      expect(i.lexer.Input).toBe('let var = 10;');
-      expect(i.errors.length).toBe(0);
+      expect(i.Lexer.Input).toBe('let var = 10;');
+      expect(i.Errors.length).toBe(0);
     });
   });
   describe('ParseProgram', () => {
@@ -107,14 +107,4 @@ describe('Parser', () => {
       expect(i.Errors.length).toBe(0);
     });
   });
-  /*
-  describe('peekError', () => {
-    test('add peek error and check', () => {
-      const i = new Parser(new Lexer('let var = 10;'));
-      expect(typeof i.peekError).toBe('function');
-      i.peekError(Token.TOKEN_TYPE.INT);
-      expect(i.Errors.length).toBe(1);
-    });
-  });
-  */
 });
