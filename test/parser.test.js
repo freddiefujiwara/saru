@@ -42,7 +42,7 @@ describe('Parser', () => {
         expect(i.Errors[ind]).toBe(expectedErrors[ind]);
       }
       expect(`${program}`).toBe(
-        "let x = undefinedlet y = undefinedlet foobar = undefined5undefined10838383"
+        'let x = undefinedlet y = undefinedlet foobar = undefined5undefined10838383'
       );
       i = new Parser(new Lexer('let 10'));
       program = i.ParseProgram();
@@ -110,7 +110,7 @@ describe('Parser', () => {
         expect(program.Statements[0].Expression.constructor.name).toBe('PrefixExpression');
         expect(program.Statements[0].Expression.Operator).toBe(expectations[i].operator);
         expect(program.Statements[0].Expression.Right.Token.Type).toBe(i < 3 ? Token.TOKEN_TYPE.INT :
-         (expectations[i].value ? Token.TOKEN_TYPE.TRUE : Token.TOKEN_TYPE.FALSE));
+          (expectations[i].value ? Token.TOKEN_TYPE.TRUE : Token.TOKEN_TYPE.FALSE));
         expect(program.Statements[0].Expression.Right.Value).toBe(expectations[i].value);
         expect(`${program.Statements[0].Expression}`).toBe(`(${expectations[i].input})`);
       }
@@ -160,28 +160,30 @@ describe('Parser', () => {
         expect(`${program.Statements[0].Expression}`).toBe(`(${expectations[i].input})`);
       }
       expectations = [
-        {input:"-a * b", expectation:"((-a) * b)"},
-        {input:"!-a", expectation:"(!(-a))"},
-        {input:"a + b + c", expectation:"((a + b) + c)"},
-        {input:"a + b - c", expectation:"((a + b) - c)"},
-        {input:"a * b * c", expectation:"((a * b) * c)"},
-        {input:"a * b / c", expectation:"((a * b) / c)"},
-        {input:"a + b / c", expectation:"(a + (b / c))"},
-        {input:"a + b * c + d / e - f", expectation:"(((a + (b * c)) + (d / e)) - f)"},
-        {input:"3 + 4; -5 * 5", expectation:"(3 + 4)((-5) * 5)"},
-        {input:"5 > 4 == 3 < 4", expectation:"((5 > 4) == (3 < 4))"},
-        {input:"5 < 4 != 3 > 4", expectation:"((5 < 4) != (3 > 4))"},
+        {input:'-a * b', expectation:'((-a) * b)'},
+        {input:'!-a', expectation:'(!(-a))'},
+        {input:'a + b + c', expectation:'((a + b) + c)'},
+        {input:'a + b - c', expectation:'((a + b) - c)'},
+        {input:'a * b * c', expectation:'((a * b) * c)'},
+        {input:'a * b / c', expectation:'((a * b) / c)'},
+        {input:'a + b / c', expectation:'(a + (b / c))'},
+        {input:'a + b * c + d / e - f', expectation:'(((a + (b * c)) + (d / e)) - f)'},
+        {input:'3 + 4; -5 * 5', expectation:'(3 + 4)((-5) * 5)'},
+        {input:'5 > 4 == 3 < 4', expectation:'((5 > 4) == (3 < 4))'},
+        {input:'5 < 4 != 3 > 4', expectation:'((5 < 4) != (3 > 4))'},
         {input:'true', expectation:'true'},
         {input:'false', expectation:'false'},
         {input:'3 > 5 == false', expectation:'((3 > 5) == false)'},
         {input:'3 < 5 == true', expectation:'((3 < 5) == true)'},
-        {input:"1 + (2 + 3) + 4", expectation:"((1 + (2 + 3)) + 4)"},
-        {input:"(5 + 5) * 2", expectation:"((5 + 5) * 2)"},
-        {input:"2 / (5 + 5)", expectation:"(2 / (5 + 5))"},
-        {input:"-(5 + 5)", expectation:"(-(5 + 5))"},
-        {input:"!(true == true)", expectation:"(!(true == true))"},
-        {input:"if (x < y) { x }", expectation:"if (x < y) x"},
-        {input:"if (x < y) { x } else { y }", expectation:"if (x < y) x else y"}
+        {input:'1 + (2 + 3) + 4', expectation:'((1 + (2 + 3)) + 4)'},
+        {input:'(5 + 5) * 2', expectation:'((5 + 5) * 2)'},
+        {input:'2 / (5 + 5)', expectation:'(2 / (5 + 5))'},
+        {input:'-(5 + 5)', expectation:'(-(5 + 5))'},
+        {input:'!(true == true)', expectation:'(!(true == true))'},
+        {input:'if (x < y) { x }', expectation:'if (x < y) x'},
+        {input:'if (x < y) { x } else { y }', expectation:'if (x < y) x else y'},
+        {input:'fn(x, y) { x + y; }', expectation:'fn(x, y) (x + y)'},
+        {input:'add(1, 2 * 3, 4 + 5);', expectation:'add(1, (2 * 3), (4 + 5))'}
       ];
       for(let i = 0 ; i < expectations.length; i++){
         const p = new Parser(new Lexer(`${expectations[i].input};`));
