@@ -23,5 +23,7 @@ export default class Node {
    * Token literal
    */
   TokenLiteral(){
+    if(!this[_token]) return;
+    return this[_token].Literal;
   }
 }

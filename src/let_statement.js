@@ -28,10 +28,4 @@ export default class LetStatement extends Statement {
   toString(){
     return `${this.TokenLiteral()} ${this[_name]} = ${this[_value]}`;
   }
-  /*
-   * Token literal
-   */
-  TokenLiteral(){
-    return this.Token.Literal;
-  }
 }

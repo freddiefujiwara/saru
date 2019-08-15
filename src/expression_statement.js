@@ -20,10 +20,4 @@ export default class ExpressionStatement extends Statement {
   toString(){
     return `${this[_expression]}`;
   }
-  /*
-   * Token literal
-   */
-  TokenLiteral(){
-    return this.Token.Literal;
-  }
 }

@@ -1,6 +1,6 @@
 import Expression from '../src/expression';
 const _value = Symbol('value');
-export default class Identifier extends Expression {
+export default class BooleanLiteral extends Expression {
   /*
    * @constructor
    */
@@ -18,6 +18,6 @@ export default class Identifier extends Expression {
    * string expression
    */
   toString(){
-    return `${this[_value]}`;
+    return `${this.Token.Literal}`;
   }
 }

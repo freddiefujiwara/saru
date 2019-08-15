@@ -14,10 +14,4 @@ export default class ReturnStatement extends Statement {
   get ReturnValue(){
     return this[_returnValue];
   }
-  /*
-   * Token literal
-   */
-  TokenLiteral(){
-    return this.Token.Literal;
-  }
 }

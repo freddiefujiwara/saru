@@ -20,10 +20,4 @@ export default class IntegerLiteral extends Expression {
   toString(){
     return `${this.Token.Literal}`;
   }
-  /*
-   * Token literal
-   */
-  TokenLiteral(){
-    return this.Token.Literal;
-  }
 }
