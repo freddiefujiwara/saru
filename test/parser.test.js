@@ -99,6 +99,81 @@ describe('Parser', () => {
       expect(program.Statements[1].Expression.Token.Literal).toBe('10');
       expect(program.Statements[1].Expression.Value).toBe(10);
     });
+    test('parse prefix expression', () => {
+      const expectations = [
+        {input:'!5',operator:'!',value:5},
+        {input:'-15',operator:'-',value:15},
+        {input:'~0',operator:'~',value:0}
+      ];
+      for(let i = 0 ; i < expectations.length; i++){
+        const p = new Parser(new Lexer(expectations[i].input));
+        const program = p.ParseProgram();
+        expect(program.Statements.length).toBe(1);
+        expect(program.Statements[0].constructor.name).toBe('ExpressionStatement');
+        expect(program.Statements[0].Expression.constructor.name).toBe('PrefixExpression');
+        expect(program.Statements[0].Expression.Operator).toBe(expectations[i].operator);
+        expect(program.Statements[0].Expression.Right.Token.Type).toBe(Token.TOKEN_TYPE.INT);
+        expect(program.Statements[0].Expression.Right.Value).toBe(expectations[i].value);
+        expect(`${program.Statements[0].Expression}`).toBe(`(${expectations[i].input})`);
+      }
+    });
+    test('parse infix expression', () => {
+      let expectations = [
+        {input:'5 + 10', left:5, operator:'+', right:10},
+        {input:'5 - 10', left:5, operator:'-', right:10},
+        {input:'5 * 10', left:5, operator:'*', right:10},
+        {input:'5 / 10', left:5, operator:'/', right:10},
+        {input:'5 > 10', left:5, operator:'>', right:10},
+        {input:'5 < 10', left:5, operator:'<', right:10},
+        {input:'5 == 10', left:5, operator:'==', right:10},
+        {input:'5 != 10', left:5, operator:'!=', right:10}
+      ];
+      for(let i = 0 ; i < expectations.length; i++){
+        const p = new Parser(new Lexer(`${expectations[i].input};`));
+        const program = p.ParseProgram();
+        expect(program.Statements.length).toBe(1);
+        expect(program.Statements[0].constructor.name).toBe('ExpressionStatement');
+        expect(program.Statements[0].Expression.constructor.name).toBe('InfixExpression');
+        expect(program.Statements[0].Expression.Operator).toBe(expectations[i].operator);
+        expect(program.Statements[0].Expression.Left.Token.Type).toBe(Token.TOKEN_TYPE.INT);
+        expect(program.Statements[0].Expression.Left.Value).toBe(expectations[i].left);
+        expect(program.Statements[0].Expression.Right.Token.Type).toBe(Token.TOKEN_TYPE.INT);
+        expect(program.Statements[0].Expression.Right.Value).toBe(expectations[i].right);
+        expect(`${program.Statements[0].Expression}`).toBe(`(${expectations[i].input})`);
+      }
+      expectations = [
+        {input:'true == true', left:true, operator:'==', right:true},
+        {input:'true != false', left:true, operator:'!=', right:false},
+        {input:'false == false', left:false, operator:'==', right:false}
+      ];
+      for(let i = 0 ; i < expectations.length; i++){
+        const p = new Parser(new Lexer(`${expectations[i].input};`));
+        const program = p.ParseProgram();
+        expect(program.Statements.length).toBe(1);
+        expect(program.Statements[0].constructor.name).toBe('ExpressionStatement');
+        expect(program.Statements[0].Expression.constructor.name).toBe('InfixExpression');
+        expect(program.Statements[0].Expression.Operator).toBe(expectations[i].operator);
+        expect(program.Statements[0].Expression.Left.Token.Type).toBe(expectations[i].left ?
+          Token.TOKEN_TYPE.TRUE : Token.TOKEN_TYPE.FALSE);
+        expect(program.Statements[0].Expression.Left.Value).toBe(expectations[i].left);
+        expect(program.Statements[0].Expression.Right.Token.Type).toBe(expectations[i].right ?
+          Token.TOKEN_TYPE.TRUE : Token.TOKEN_TYPE.FALSE);
+        expect(program.Statements[0].Expression.Right.Value).toBe(expectations[i].right);
+        expect(`${program.Statements[0].Expression}`).toBe(`(${expectations[i].input})`);
+      }
+      expectations = [
+        {input:'true', expectation:'true'},
+        {input:'false', expectation:'false'},
+        {input:'3 > 5 == false', expectation:'((3 > 5) == false)'},
+        {input:'3 < 5 == true', expectation:'((3 < 5) == true)'}
+      ];
+      for(let i = 0 ; i < expectations.length; i++){
+        const p = new Parser(new Lexer(`${expectations[i].input};`));
+        const program = p.ParseProgram();
+        expect(program.Statements[0].constructor.name).toBe('ExpressionStatement');
+        expect(`${program}`).toBe(expectations[i].expectation);
+      }
+    });
   });
   describe('Errors', () => {
     test('check current errors', () => {

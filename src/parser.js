@@ -17,10 +17,15 @@ const _nextToken = Symbol('nextToken');
 const _parseStatement = Symbol('parseStatement');
 const _parseExpression = Symbol('parseExpression');
 const _parseIdentifier = Symbol('parseIdentifier');
+const _parseBoolean = Symbol('parseBoolean');
 const _parseIntegerLiteral = Symbol('parseIntegerLiteral');
 const _parseLetStatement = Symbol('parseLetStatement');
 const _parseReturnStatement = Symbol('parseReturnStatement');
 const _parseExpressionStatement = Symbol('parseExpressionStatement');
+const _parsePrefixExpression = Symbol('parsePrefixExpression');
+const _parseInfixExpression = Symbol('parseInfixExpression');
+const _curPrecedence = Symbol('curPrecedence');
+const _peekPrecedence = Symbol('peekPrecedence');
 const _curTokenIs = Symbol('curTokenIs');
 const _peekTokenIs = Symbol('peekTokenIs');
 const _expectPeek = Symbol('expectPeek');
@@ -28,7 +33,6 @@ const _peekError = Symbol('peekError');
 const _errors = Symbol('errors');
 const _lexer = Symbol('lexer');
 const LOWEST = 1;
-/* to be used in future
 const LOR = 2;
 const LAND = 3;
 const EQUALS = 4;
@@ -39,8 +43,33 @@ const PREFIX = 8;
 const BITWISE = 9;
 const CALL = 10;
 const INDEX = 11;
-*/
-
+let PRECEDENCE = {
+  [Token.TOKEN_TYPE.LOR]: EQUALS,
+  [Token.TOKEN_TYPE.LAND]: EQUALS,
+  [Token.TOKEN_TYPE.EQ]: EQUALS,
+  [Token.TOKEN_TYPE.NOT_EQ]: EQUALS,
+  [Token.TOKEN_TYPE.LT]: LESSGREATER,
+  [Token.TOKEN_TYPE.LTE]: LESSGREATER,
+  [Token.TOKEN_TYPE.GT]: LESSGREATER,
+  [Token.TOKEN_TYPE.GTE]: LESSGREATER,
+  [Token.TOKEN_TYPE.PLUS]: SUM,
+  [Token.TOKEN_TYPE.MINUS]: SUM,
+  [Token.TOKEN_TYPE.SLASH]: PRODUCT,
+  [Token.TOKEN_TYPE.ASTERISK]: PRODUCT,
+  [Token.TOKEN_TYPE.EXPONENT]: PRODUCT,
+  [Token.TOKEN_TYPE.REM]: PRODUCT,
+  [Token.TOKEN_TYPE.BIT_AND]: BITWISE,
+  [Token.TOKEN_TYPE.BIT_OR]: BITWISE,
+  [Token.TOKEN_TYPE.BIT_XOR]: BITWISE,
+  [Token.TOKEN_TYPE.BIT_NOT]: BITWISE,
+  [Token.TOKEN_TYPE.BIT_LSHIFT]: BITWISE,
+  [Token.TOKEN_TYPE.BIT_RSHIFT]: BITWISE,
+  [Token.TOKEN_TYPE.BIT_ZRSHIFT]: BITWISE,
+  [Token.TOKEN_TYPE.RANGE]: BITWISE,
+  [Token.TOKEN_TYPE.RANGE_INCL]: BITWISE,
+  [Token.TOKEN_TYPE.LPAREN]: CALL,
+  [Token.TOKEN_TYPE.LBRACKET]: INDEX,
+};
 export default class Parser {
   /*
    * parse and return the program
@@ -92,7 +121,7 @@ export default class Parser {
       return this[_parseExpressionStatement]();
     };
     //   _parseExpression
-    this[_parseExpression] = () =>{
+    this[_parseExpression] = (precedence = LOWEST) =>{
       let leftExp;
       switch(this.curToken.Type){
       case Token.TOKEN_TYPE.IDENT :
@@ -101,8 +130,49 @@ export default class Parser {
       case Token.TOKEN_TYPE.INT :
         leftExp =  this[_parseIntegerLiteral]();
         break;
+      case Token.TOKEN_TYPE.BANG :
+      case Token.TOKEN_TYPE.MINUS :
+      case Token.TOKEN_TYPE.BIT_NOT :
+        leftExp =  this[_parsePrefixExpression]();
+        break;
+      case Token.TOKEN_TYPE.TRUE:
+      case Token.TOKEN_TYPE.FALSE:
+        leftExp =  this[_parseBoolean]();
+        break;
       default :
         leftExp = undefined;
+      }
+      while(!this[_peekTokenIs](Token.TOKEN_TYPE.SEMICOLON) &&
+        precedence < this[_peekPrecedence]()){
+        let infix;
+        switch(this.peekToken.Type){
+        case Token.TOKEN_TYPE.PLUS:
+        case Token.TOKEN_TYPE.MINUS:
+        case Token.TOKEN_TYPE.SLASH:
+        case Token.TOKEN_TYPE.ASTERISK:
+        case Token.TOKEN_TYPE.EXPONENT:
+        case Token.TOKEN_TYPE.EQ:
+        case Token.TOKEN_TYPE.NOT_EQ:
+        case Token.TOKEN_TYPE.LT:
+        case Token.TOKEN_TYPE.LTE:
+        case Token.TOKEN_TYPE.GT:
+        case Token.TOKEN_TYPE.GTE:
+        case Token.TOKEN_TYPE.REM:
+        case Token.TOKEN_TYPE.LAND:
+        case Token.TOKEN_TYPE.LOR:
+        case Token.TOKEN_TYPE.BIT_AND:
+        case Token.TOKEN_TYPE.BIT_OR:
+        case Token.TOKEN_TYPE.BIT_XOR:
+        case Token.TOKEN_TYPE.BIT_LSHIFT:
+        case Token.TOKEN_TYPE.BIT_RSHIFT:
+        case Token.TOKEN_TYPE.BIT_ZRSHIFT:
+        case Token.TOKEN_TYPE.RANGE:
+        case Token.TOKEN_TYPE.RANGE_INCL:
+          this[_nextToken]();
+          infix = this[_parseInfixExpression];
+          break;
+        }
+        leftExp = infix(leftExp);
       }
       return leftExp;
     };
@@ -111,6 +181,13 @@ export default class Parser {
       return new Identifier(
         this.curToken,
         this.curToken.Literal
+      );
+    };
+    //   _parseBoolean
+    this[_parseBoolean] = () =>{
+      return new BooleanLiteral(
+        this.curToken,
+        this[_curTokenIs](Token.TOKEN_TYPE.TRUE)
       );
     };
     //   _parseIntegerLiteral
@@ -162,6 +239,42 @@ export default class Parser {
         this[_nextToken]();
       }
       return stmt;
+    };
+    //   _parsePrefixExpression
+    this[_parsePrefixExpression] = () =>{
+      const curToken = this.curToken;
+      this[_nextToken]();
+      return new PrefixExpression(
+        curToken,
+        curToken.Literal,
+        this[_parseExpression](PREFIX)
+      );
+    };
+    //   _parseInfixExpression
+    this[_parseInfixExpression] = (left) =>{
+      const curToken = this.curToken;
+      const curPrecedence = this[_curPrecedence]();
+      this[_nextToken]();
+      return new InfixExpression(
+        curToken,
+        left,
+        curToken.Literal,
+        this[_parseExpression](
+          curPrecedence
+        )
+      );
+    };
+    //   _curPrecedence
+    this[_curPrecedence] = () =>{
+      return undefined !== PRECEDENCE[this.curToken.Type] ?
+        PRECEDENCE[this.curToken.Type]
+        : LOWEST;
+    };
+    //   _peekPrecedence
+    this[_peekPrecedence] = () =>{
+      return undefined !== PRECEDENCE[this.peekToken.Type] ?
+        PRECEDENCE[this.peekToken.Type]
+        : LOWEST;
     };
     //   _curTokenIs
     this[_curTokenIs] = (type) =>{
