@@ -14,7 +14,7 @@ export default class Program extends Node {
    * string expression
    */
   toString(){
-    return this.Statements.map( s => `${s}`).join(';\n');
+    return this.Statements.map( s => `${s}`).join('');
   }
   /*
    * @constructor

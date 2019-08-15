@@ -4,7 +4,7 @@ export default class BlockStatement extends Statement {
    * string expression
    */
   toString(){
-    return this.Statements.map( s => `${s}`).join(';\n');
+    return this.Statements.map( s => `${s}`).join('');
   }
   /*
    * @constructor

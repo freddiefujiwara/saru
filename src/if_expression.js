@@ -25,7 +25,7 @@ export default class IfExpression extends Expression {
    * string expression
    */
   toString(){
-    const out = `${this[_condition]} ${this[_consequence]}`;
+    const out = `if ${this[_condition]} ${this[_consequence]}`;
     if(!this[_alternative]) return out;
     return`${out} else ${this[_alternative]}`;
   }

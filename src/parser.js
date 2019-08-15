@@ -22,8 +22,11 @@ const _parseIntegerLiteral = Symbol('parseIntegerLiteral');
 const _parseLetStatement = Symbol('parseLetStatement');
 const _parseReturnStatement = Symbol('parseReturnStatement');
 const _parseExpressionStatement = Symbol('parseExpressionStatement');
+const _parseBlockStatement = Symbol('parseBlockStatement');
+const _parseIfExpression = Symbol('parseIfExpression');
 const _parsePrefixExpression = Symbol('parsePrefixExpression');
 const _parseInfixExpression = Symbol('parseInfixExpression');
+const _parseGroupedExpression = Symbol('parseGroupedExpression');
 const _curPrecedence = Symbol('curPrecedence');
 const _peekPrecedence = Symbol('peekPrecedence');
 const _curTokenIs = Symbol('curTokenIs');
@@ -113,10 +116,10 @@ export default class Parser {
     //   _parseStatement
     this[_parseStatement] = () =>{
       switch(this.curToken.Type){
-      case Token.TOKEN_TYPE.LET :
-        return this[_parseLetStatement]();
-      case Token.TOKEN_TYPE.RETURN :
-        return this[_parseReturnStatement]();
+        case Token.TOKEN_TYPE.LET :
+          return this[_parseLetStatement]();
+        case Token.TOKEN_TYPE.RETURN :
+          return this[_parseReturnStatement]();
       }
       return this[_parseExpressionStatement]();
     };
@@ -124,53 +127,59 @@ export default class Parser {
     this[_parseExpression] = (precedence = LOWEST) =>{
       let leftExp;
       switch(this.curToken.Type){
-      case Token.TOKEN_TYPE.IDENT :
-        leftExp =  this[_parseIdentifier]();
-        break;
-      case Token.TOKEN_TYPE.INT :
-        leftExp =  this[_parseIntegerLiteral]();
-        break;
-      case Token.TOKEN_TYPE.BANG :
-      case Token.TOKEN_TYPE.MINUS :
-      case Token.TOKEN_TYPE.BIT_NOT :
-        leftExp =  this[_parsePrefixExpression]();
-        break;
-      case Token.TOKEN_TYPE.TRUE:
-      case Token.TOKEN_TYPE.FALSE:
-        leftExp =  this[_parseBoolean]();
-        break;
-      default :
-        leftExp = undefined;
+        case Token.TOKEN_TYPE.IDENT :
+          leftExp =  this[_parseIdentifier]();
+          break;
+        case Token.TOKEN_TYPE.INT :
+          leftExp =  this[_parseIntegerLiteral]();
+          break;
+        case Token.TOKEN_TYPE.BANG :
+        case Token.TOKEN_TYPE.MINUS :
+        case Token.TOKEN_TYPE.BIT_NOT :
+          leftExp =  this[_parsePrefixExpression]();
+          break;
+        case Token.TOKEN_TYPE.TRUE:
+        case Token.TOKEN_TYPE.FALSE:
+          leftExp =  this[_parseBoolean]();
+          break;
+        case Token.TOKEN_TYPE.LPAREN:
+          leftExp =  this[_parseGroupedExpression]();
+          break;
+        case Token.TOKEN_TYPE.IF:
+          leftExp =  this[_parseIfExpression]();
+          break;
+        default :
+          leftExp = undefined;
       }
       while(!this[_peekTokenIs](Token.TOKEN_TYPE.SEMICOLON) &&
         precedence < this[_peekPrecedence]()){
         let infix;
         switch(this.peekToken.Type){
-        case Token.TOKEN_TYPE.PLUS:
-        case Token.TOKEN_TYPE.MINUS:
-        case Token.TOKEN_TYPE.SLASH:
-        case Token.TOKEN_TYPE.ASTERISK:
-        case Token.TOKEN_TYPE.EXPONENT:
-        case Token.TOKEN_TYPE.EQ:
-        case Token.TOKEN_TYPE.NOT_EQ:
-        case Token.TOKEN_TYPE.LT:
-        case Token.TOKEN_TYPE.LTE:
-        case Token.TOKEN_TYPE.GT:
-        case Token.TOKEN_TYPE.GTE:
-        case Token.TOKEN_TYPE.REM:
-        case Token.TOKEN_TYPE.LAND:
-        case Token.TOKEN_TYPE.LOR:
-        case Token.TOKEN_TYPE.BIT_AND:
-        case Token.TOKEN_TYPE.BIT_OR:
-        case Token.TOKEN_TYPE.BIT_XOR:
-        case Token.TOKEN_TYPE.BIT_LSHIFT:
-        case Token.TOKEN_TYPE.BIT_RSHIFT:
-        case Token.TOKEN_TYPE.BIT_ZRSHIFT:
-        case Token.TOKEN_TYPE.RANGE:
-        case Token.TOKEN_TYPE.RANGE_INCL:
-          this[_nextToken]();
-          infix = this[_parseInfixExpression];
-          break;
+          case Token.TOKEN_TYPE.PLUS:
+          case Token.TOKEN_TYPE.MINUS:
+          case Token.TOKEN_TYPE.SLASH:
+          case Token.TOKEN_TYPE.ASTERISK:
+          case Token.TOKEN_TYPE.EXPONENT:
+          case Token.TOKEN_TYPE.EQ:
+          case Token.TOKEN_TYPE.NOT_EQ:
+          case Token.TOKEN_TYPE.LT:
+          case Token.TOKEN_TYPE.LTE:
+          case Token.TOKEN_TYPE.GT:
+          case Token.TOKEN_TYPE.GTE:
+          case Token.TOKEN_TYPE.REM:
+          case Token.TOKEN_TYPE.LAND:
+          case Token.TOKEN_TYPE.LOR:
+          case Token.TOKEN_TYPE.BIT_AND:
+          case Token.TOKEN_TYPE.BIT_OR:
+          case Token.TOKEN_TYPE.BIT_XOR:
+          case Token.TOKEN_TYPE.BIT_LSHIFT:
+          case Token.TOKEN_TYPE.BIT_RSHIFT:
+          case Token.TOKEN_TYPE.BIT_ZRSHIFT:
+          case Token.TOKEN_TYPE.RANGE:
+          case Token.TOKEN_TYPE.RANGE_INCL:
+            this[_nextToken]();
+            infix = this[_parseInfixExpression];
+            break;
         }
         leftExp = infix(leftExp);
       }
@@ -240,6 +249,43 @@ export default class Parser {
       }
       return stmt;
     };
+    this[_parseBlockStatement] = () => {
+      let block = new BlockStatement(this.curToken);
+      this[_nextToken]();
+      while (!this[_curTokenIs](Token.TOKEN_TYPE.RBRACE) && !this[_curTokenIs](Token.TOKEN_TYPE.EOF)) {
+        const stmt = this[_parseStatement]();
+        if (undefined !== stmt) {
+          block.Statements.push(stmt);
+        }
+        this[_nextToken]();
+      }
+      return block;
+    }
+    //   _parseIfExpression
+    this[_parseIfExpression] = () => {
+      const curToken = this.curToken;
+      if (!this[_expectPeek](Token.TOKEN_TYPE.LPAREN)) {
+        return undefined;
+      }
+      this[_nextToken]();
+      const condition = this[_parseExpression](LOWEST);
+      if (!this[_expectPeek](Token.TOKEN_TYPE.RPAREN)) {
+        return undefined;
+      }
+      if (!this[_expectPeek](Token.TOKEN_TYPE.LBRACE)) {
+        return undefined;
+      }
+      const consequence = this[_parseBlockStatement]();
+      let alternative = undefined;
+      if (this[_peekTokenIs](Token.TOKEN_TYPE.ELSE)) {
+        this[_nextToken]();
+        if (!this[_expectPeek](Token.TOKEN_TYPE.LBRACE)) {
+          return undefined;
+        }
+        alternative = this[_parseBlockStatement]();
+      }
+      return new IfExpression(curToken, condition, consequence, alternative);
+    }
     //   _parsePrefixExpression
     this[_parsePrefixExpression] = () =>{
       const curToken = this.curToken;
@@ -264,6 +310,15 @@ export default class Parser {
         )
       );
     };
+    //   _parseGroupedExpression
+    this[_parseGroupedExpression] = () => {
+      this[_nextToken]();
+      const exp = this[_parseExpression](LOWEST)
+      if (!this[_expectPeek](Token.TOKEN_TYPE.RPAREN)) {
+        return undefined;
+      }
+      return exp;
+    }
     //   _curPrecedence
     this[_curPrecedence] = () =>{
       return undefined !== PRECEDENCE[this.curToken.Type] ?
