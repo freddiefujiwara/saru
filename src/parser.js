@@ -48,7 +48,7 @@ const PREFIX = 8;
 const BITWISE = 9;
 const CALL = 10;
 const INDEX = 11;
-let PRECEDENCE = {
+const PRECEDENCE = {
   [Token.TOKEN_TYPE.LOR]: EQUALS,
   [Token.TOKEN_TYPE.LAND]: EQUALS,
   [Token.TOKEN_TYPE.EQ]: EQUALS,
@@ -221,7 +221,7 @@ export default class Parser {
     };
     //   _parseExpressionList
     this[_parseExpressionList] = (end) =>{
-      let list = [];
+      const list = [];
       if (this[_peekTokenIs](end)) {
         this[_nextToken]();
         return list;
@@ -252,7 +252,7 @@ export default class Parser {
       return new FunctionLiteral(curToken, parameters, body);
     };
     this[_parseFunctionParameters] = () => {
-      let identifiers = [];
+      const identifiers = [];
       if (this[_peekTokenIs](Token.TOKEN_TYPE.RPAREN)) {
         this[_nextToken]();
         return identifiers;
@@ -278,9 +278,9 @@ export default class Parser {
         return undefined;
       }
       const ident = new Identifier(
-          this.curToken,
-          this.curToken.Literal
-        );
+        this.curToken,
+        this.curToken.Literal
+      );
       if(!this[_expectPeek](Token.TOKEN_TYPE.ASSIGN)){
         return undefined;
       }
@@ -321,9 +321,10 @@ export default class Parser {
     };
     //   _parseBlockStatement
     this[_parseBlockStatement] = () => {
-      let block = new BlockStatement(this.curToken);
+      const block = new BlockStatement(this.curToken);
       this[_nextToken]();
-      while (!this[_curTokenIs](Token.TOKEN_TYPE.RBRACE) && !this[_curTokenIs](Token.TOKEN_TYPE.EOF)) {
+      while (!this[_curTokenIs](Token.TOKEN_TYPE.RBRACE) &&
+        !this[_curTokenIs](Token.TOKEN_TYPE.EOF)) {
         const stmt = this[_parseStatement]();
         if (undefined !== stmt) {
           block.Statements.push(stmt);
