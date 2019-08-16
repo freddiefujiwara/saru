@@ -242,11 +242,11 @@ export default class Parser {
     this[_parseFunctionLiteral] = () => {
       const curToken = this.curToken;
       if (!this[_expectPeek](Token.TOKEN_TYPE.LPAREN)) {
-        return null;
+        return undefined;
       }
       const parameters = this[_parseFunctionParameters]();
       if (!this[_expectPeek](Token.TOKEN_TYPE.LBRACE)) {
-        return null;
+        return undefined;
       }
       const body = this[_parseBlockStatement]();
       return new FunctionLiteral(curToken, parameters, body);
