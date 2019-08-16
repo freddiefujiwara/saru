@@ -1,6 +1,6 @@
 {
   "name": "saru",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "An interpreted language for NodeJS, based on Monkey",
   "main": "index.js",
   "bin": {

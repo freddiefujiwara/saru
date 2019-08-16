@@ -8,6 +8,12 @@ export default class ReturnStatement extends Statement {
     return this[_returnValue];
   }
   /*
+   * string expression
+   */
+  toString(){
+    return `${this.TokenLiteral()} ${undefined === this[_returnValue] ? '' : this[_returnValue]}`;
+  }
+  /*
    * @constructor
    */
   constructor(token = undefined , returnValue = undefined){

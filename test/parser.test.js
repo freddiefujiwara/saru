@@ -42,7 +42,7 @@ describe('Parser', () => {
         expect(i.Errors[ind]).toBe(expectedErrors[ind]);
       }
       expect(`${program}`).toBe(
-        'let x = undefinedlet y = undefinedlet foobar = undefined5undefined10838383'
+        'let x = 5let y = 10let foobar = 8383835undefined10838383'
       );
       i = new Parser(new Lexer('let 10'));
       program = i.ParseProgram();
