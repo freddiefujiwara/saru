@@ -277,28 +277,33 @@ export default class Parser {
       if(!this[_expectPeek](Token.TOKEN_TYPE.IDENT)){
         return undefined;
       }
-      const stmt = new LetStatement(
-        letToken,
-        new Identifier(
+      const ident = new Identifier(
           this.curToken,
           this.curToken.Literal
-        )
-      );
+        );
       if(!this[_expectPeek](Token.TOKEN_TYPE.ASSIGN)){
         return undefined;
       }
-      while(!this[_curTokenIs](Token.TOKEN_TYPE.SEMICOLON)){
+      this[_nextToken]();
+      const value = this[_parseExpression](LOWEST);
+      if (this[_peekTokenIs](Token.TOKEN_TYPE.SEMICOLON)) {
         this[_nextToken]();
       }
-      return stmt;
+      return new LetStatement(
+        letToken,
+        ident,
+        value
+      );
     };
     //   _parseReturnStatement
     this[_parseReturnStatement] = () =>{
-      const stmt = new ReturnStatement(
-        this.curToken
-      );
+      const curToken = this.curToken;
       this[_nextToken]();
-      while(!this[_curTokenIs](Token.TOKEN_TYPE.SEMICOLON)){
+      const stmt = new ReturnStatement(
+        curToken,
+        this[_parseExpression](LOWEST)
+      );
+      if(this[_peekTokenIs](Token.TOKEN_TYPE.SEMICOLON)){
         this[_nextToken]();
       }
       return stmt;
